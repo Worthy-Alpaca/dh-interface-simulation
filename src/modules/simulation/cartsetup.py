@@ -1,6 +1,6 @@
 import numpy as np
 from pathlib import Path
-from modules.simulation.dataloader import DataLoader
+from simulation.dataloader import DataLoader
 
 class CartSetup():
   def __init__(self, data):
