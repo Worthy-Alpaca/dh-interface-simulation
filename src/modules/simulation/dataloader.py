@@ -33,10 +33,10 @@ class DataLoader():
 
   def __call__(self, *args: any, **kwds: any) -> tuple:
     neededColumns_Data = ['Component Code', 'X', 'Y', 'Task']
-    neededColumns_Components = ['Component Code', 'Placement(Acceleration):X', 'Placement(Acceleration):Y']
+    neededColumns_Components = ['Component Code', 'Placement(Acceleration):X', 'Placement(Acceleration):Y', 'Priority Nozzle No.']
     neededColumns_Feeder = ['Component Code', 'FeedStyle', 'ST No.']
     data = self.product_data[neededColumns_Data].rename(columns={'Component Code': 'Code'})
-    components_data = self.product_components_data[neededColumns_Components].rename(columns={'Component Code': 'index'})
+    components_data = self.product_components_data[neededColumns_Components].rename(columns={'Component Code': 'index', 'Priority Nozzle No.': 'Nozzle_No'})
     components_feeder_data = self.product_feeder_data[neededColumns_Feeder].rename(columns={'Component Code': 'index'})
 
 
@@ -80,7 +80,9 @@ class DataLoader():
     components = components.drop(['Component Code'], axis=1)
     components['mean_acceleration'] = components['mean_acceleration'].fillna(1000.0)
 
-    
+    self.data = data
+    self.components = components
+    self.offsets = offsets
     return (data, components, offsets)
 
 if __name__ == '__main__':
