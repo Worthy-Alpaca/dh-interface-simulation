@@ -8,8 +8,6 @@ import sys
 import os
 import json
 
-from pyparsing import col
-
 
 
 PACKAGE_PARENT = '../'
@@ -52,6 +50,7 @@ class Interface:
         }
         self.__createMenu(menubar, 'File', fileMenu)
         self.__createMenu(menubar, 'Setup', setupMenu)
+        self.__createOptionsMenu(menubar)
         self.mainframe.config(menu=menubar)
         Canvas(self.mainframe)
         self.__createButton(8, 0, text='Compare', function=self.__dummy)
@@ -79,6 +78,13 @@ class Interface:
             else:
                 filemenu.add_command(label=key, command=data[key])
         menubar.add_cascade(label=label, menu=filemenu)
+
+    def __createOptionsMenu(self, menubar: tk.Menu):
+        filemenu = tk.Menu(menubar, tearoff=0)
+        self.muiltthread = tk.BooleanVar()
+        self.muiltthread.set(False)
+        filemenu.add_checkbutton(label='Use Multithreading', var=self.muiltthread)
+        menubar.add_cascade(label='Options', menu=filemenu)
 
     def __createButton(self, posX: int, posY: int, text: str, function: FunctionType, margin: int = None) -> tk.Button:
         """ Create a button at specified position"""
@@ -265,6 +271,7 @@ class Interface:
 
     def __simulate(self):
         #try:
+            return print(self.muiltthread.get())
             path = self.__parseInputSimulation()
             if len(self.machines) == 0:
                 self.__setupMachines()
@@ -272,7 +279,7 @@ class Interface:
             print(self.machines)
             data = DataLoader(path)
             manufacturing = Manufacturing(data(), list(self.machines.values())[0] )
-            simulationData = manufacturing(plotPCB=True)
+            simulationData = manufacturing(plotPCB=True, multithread=self.muiltthread.get())
             print(simulationData['time'])
             avg = simulationData['time'] * int(self.numManu.get())
             self.__createLabel(2, 1, avg)
