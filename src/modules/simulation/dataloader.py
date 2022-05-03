@@ -58,6 +58,12 @@ class DataLoader():
     offsets = pd.concat([zero_offset, offsets], axis=0)
     offsets = offsets.drop_duplicates()
     offsets = offsets.reindex()
+    offsetlist = []
+    for index, row in offsets.iterrows():
+      offset = (row.X, row.Y)
+      offsetlist.append(offset)
+
+
 
     data = data.loc[data['Task'] != 'B Mark Positive Logic']
     
@@ -82,11 +88,11 @@ class DataLoader():
 
     self.data = data
     self.components = components
-    self.offsets = offsets
-    return (data, components, offsets)
+    self.offsets = offsetlist
+    return (data, components, offsetlist)
 
 if __name__ == '__main__':
-  path = Path('/content/26AAWAB')
+  path =  Path(os.getcwd() + os.path.normpath('/data/24aarab'))
   dataloader = DataLoader(path, separator=',')
   data = dataloader()
   FL = data[1]#.loc[data[1]['FeedStyle'] == 'ST-FL']
