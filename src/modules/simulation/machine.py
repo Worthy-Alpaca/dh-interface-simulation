@@ -12,18 +12,21 @@ from pathlib import Path
 
 class Machine:
     """ Class that represents a machine """
-    def __init__(self, name: str, cph: int, nozHeads: int) -> None:
+    def __init__(self, name: str, cph: int, nozHeads: int, offsets: dict = None) -> None:
         self.machineName = name
         self.cph = cph
         self.nozHeads = nozHeads
-        self.cps = 3600 / cph
-        self.velocity = math.sqrt(180**2 + 180**2) / self.cps
+        cps = 3600 / cph
+        self.velocity = math.sqrt(180**2 + 180**2) / cps
+        #if offsets is not None:
+        self.offsets = offsets
 
-    def getData(self):
+    def getData(self) -> dict:
         return {
             'machine': self.machineName,
             'cph': self.cph,
-            'nozHeads': self.nozHeads
+            'nozHeads': self.nozHeads,
+            'offsets': self.offsets
         }
 
 
