@@ -11,14 +11,14 @@ class Controller(Canvas):
     def __init__(self, frame) -> None:
         super().__init__(frame)
 
-    def __call__(self, data_x, data_y, time, numParts) -> any:
+    def __call__(self, data_x, data_y, time, numParts, randomInterupt: tuple = (0, 0)) -> any:
         self.figure.clear()
         plot = self.figure.add_subplot(121)
         ax = self.figure.add_subplot(122)
         ax.axis('off')
         sumtime = []
         for i in range(numParts):
-            sumtime.append(time + random.randint(0, 30))
+            sumtime.append(time + random.randint(randomInterupt[0], randomInterupt[1]))
         
         textstr = '\n'.join((
             f'Overall time needed: {round(sum(sumtime), 2)} Seconds',
