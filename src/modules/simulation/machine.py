@@ -12,10 +12,11 @@ from pathlib import Path
 
 class Machine:
     """ Class that represents a machine """
-    def __init__(self, name: str, cph: int, nozHeads: int, offsets: dict = None) -> None:
+    def __init__(self, name: str, cph: int, nozHeads: int, machineType: str, offsets: dict = None) -> None:
         self.machineName = name
         self.cph = cph
         self.nozHeads = nozHeads
+        self.SMD = machineType
         cps = 3600 / cph
         self.velocity = math.sqrt(180**2 + 180**2) / cps
         #if offsets is not None:
@@ -26,6 +27,7 @@ class Machine:
             'machine': self.machineName,
             'cph': self.cph,
             'nozHeads': self.nozHeads,
+            'SMD': self.SMD,
             'offsets': self.offsets
         }
 
