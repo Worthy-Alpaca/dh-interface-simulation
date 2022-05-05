@@ -15,11 +15,8 @@ from simulation.machine import Machine
 global XMOD 
 XMOD = 1
 RANDOM_PROBLEMS = (0,0)#(30, 300)
-OFFSET_X = 0
-OFFSET_Y = 0
 DROPOFF = 0.1
 PICKUP = 0.1
-CHECKPOINT = (30.0, -4.0)
 
 
 class Manufacturing():
@@ -34,6 +31,11 @@ class Manufacturing():
     self.components = data[1]
     self.data = data[0]
     self.offsets = data[2]
+    if machine.offsets is not None:
+      self.OFFSET_X = machine.offsets['pcb'][0]
+      self.OFFSET_Y = machine.offsets['pcb'][1]
+      self.CHECKPOINT = (machine.offsets['checkpoint'][0], machine.offsets['checkpoint'][1])
+      
     
 
   def __calcVector(self, vectorA: tuple, vectorB: tuple, velocity: float):
@@ -67,7 +69,7 @@ class Manufacturing():
       lookupTable = self.components[self.components['index'].str.match(row.Code)]
       #print(lookupTable)
       location_vector_A = (lookupTable.Pickup_X.max(), lookupTable.Pickup_Y.max())
-      location_vector_B = ((row.X + OFFSET_X + offset_row[0]), (row.Y + OFFSET_Y + offset_row[1]))
+      location_vector_B = ((row.X + self.OFFSET_X + offset_row[0]), (row.Y + self.OFFSET_Y + offset_row[1]))
       velocity = self.machine.velocity * ( lookupTable.mean_acceleration.max() / 1000)
       
       if self.multiPickOption == True:
@@ -91,9 +93,9 @@ class Manufacturing():
         elif row.Task == 'End Multiple Pickup':
           # calculate the path to the current component
           loc_vector_A = (lookupTable.Pickup_X.max(), lookupTable.Pickup_Y.max())
-          loc_vector_B = ((row.X + OFFSET_X + offset_row[0]), (row.Y + OFFSET_Y + offset_row[1]))
-          checkpoint = self.__calcVector(loc_vector_A, CHECKPOINT, velocity)
-          path = self.__calcVector(CHECKPOINT, loc_vector_B, velocity)
+          loc_vector_B = ((row.X + self.OFFSET_X + offset_row[0]), (row.Y + self.OFFSET_Y + offset_row[1]))
+          checkpoint = self.__calcVector(loc_vector_A, self.CHECKPOINT, velocity)
+          path = self.__calcVector(self.CHECKPOINT, loc_vector_B, velocity)
           TIME = path + TIME + DROPOFF + checkpoint
 
           # set the current component vector as the current postition
@@ -128,8 +130,8 @@ class Manufacturing():
         else:
           #print('==  single pick, multipick opt  ==')
           # calculate the path/time for a single pickup
-          path_length = self.__calcVector(location_vector_A, CHECKPOINT, velocity)
-          checkpoint = self.__calcVector(CHECKPOINT, location_vector_B, velocity)
+          path_length = self.__calcVector(location_vector_A, self.CHECKPOINT, velocity)
+          checkpoint = self.__calcVector(self.CHECKPOINT, location_vector_B, velocity)
           TIME = (path_length) + TIME + DROPOFF + checkpoint
 
           # calculate the path/time to return to the next pickup point
@@ -153,8 +155,8 @@ class Manufacturing():
 
       else:
         # all components get treated with single pick
-        path_length = self.__calcVector(location_vector_A, CHECKPOINT, velocity)
-        checkpoint = self.__calcVector(CHECKPOINT, location_vector_B, velocity)
+        path_length = self.__calcVector(location_vector_A, self.CHECKPOINT, velocity)
+        checkpoint = self.__calcVector(self.CHECKPOINT, location_vector_B, velocity)
         TIME = (path_length) + TIME + DROPOFF + checkpoint
         next_index = index + 1
         while next_index not in self.data.index:
@@ -221,7 +223,10 @@ class Manufacturing():
     velocity = 20 # mm/s
 
     # highest coordinate on PCB
-    high = self.data['Y'].max() + self.offsets['Y'].max()
+    from operator import itemgetter
+
+    offset = max(self.offsets)#,key=itemgetter(1))
+    high = self.data['Y'].max() + offset[1]
     print(high)
     return (math.sqrt(0**2 + high**2) / velocity)
 
