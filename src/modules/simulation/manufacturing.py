@@ -47,7 +47,7 @@ class Manufacturing():
     #print('path length:', path_length)
     return path_length / velocity
 
-  def __calcTime(self, offset_row):
+  def calcTime(self, offset_row):
     def isNan(string):
       return string != string
   
@@ -182,7 +182,7 @@ class Manufacturing():
     # for offset_index, offset_row in self.offsets.iterrows():
     if multithread == True:
       pool = Pool(len(self.offsets))
-      pool_data = pool.map(self.__calcTime, self.offsets)
+      pool_data = pool.map(self.calcTime, self.offsets)
       pool.close()
       pool.join()
       time = 0
@@ -204,7 +204,7 @@ class Manufacturing():
       plotX = []
       plotY = []
       for i in self.offsets:
-        iter_data = self.__calcTime(i)
+        iter_data = self.calcTime(i)
         time = time + iter_data['time']
         plotX.append(iter_data['plot_x'])
         plotY.append(iter_data['plot_y'])
