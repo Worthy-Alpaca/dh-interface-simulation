@@ -90,7 +90,7 @@ class Interface:
         if data == None:
             return
         for i in data['machines']:
-            self.machines[i['machine']] = Machine(i['machine'], i['cph'], i['nozHeads'], i['offsets'])
+            self.machines[i['machine']] = Machine(i['machine'], i['cph'], i['nozHeads'], i['SMD'], i['offsets'])
         self.__viewMachines()
 
     def __createMenu(self, menubar: tk.Menu, label: str, data: dict):
@@ -104,9 +104,9 @@ class Interface:
 
     def __createOptionsMenu(self, menubar: tk.Menu):
         filemenu = tk.Menu(menubar, tearoff=0)
-        self.muiltthread = tk.BooleanVar()
-        self.muiltthread.set(self.config.getboolean('default', 'multithreading'))
-        filemenu.add_checkbutton(label='Use Multithreading', var=self.muiltthread, command=lambda: self.config.set('default', 'multithreading', str(self.muiltthread.get())))
+        self.multithread = tk.BooleanVar()
+        self.multithread.set(self.config.getboolean('default', 'multithreading'))
+        filemenu.add_checkbutton(label='Use Multithreading', var=self.multithread, command=lambda: self.config.set('default', 'multithreading', str(self.multithread.get())))
         self.randomInterupt = tk.BooleanVar()
         self.randomInterupt.set(self.config.getboolean('default', 'randomInterrupt'))
         filemenu.add_checkbutton(label='Use Random Interuptions', var=self.randomInterupt, command=lambda: self.config.set('default', 'randomInterrupt', str(self.randomInterupt.get())))
@@ -170,10 +170,12 @@ class Interface:
 
         tk.Label(top, text='CPH:').grid(row=1, column=0)
         cphEntry = tk.Entry(top)
+        cphEntry.insert('end', '0')
         cphEntry.grid(row=1, column=1)
         
         tk.Label(top, text='Nozzle Heads:').grid(row=2, column=0)
         nozHeads = tk.Entry(top)
+        nozHeads.insert('end', '0')
         nozHeads.grid(row=2, column=1)
         self.button_pressed = tk.StringVar()
         smdMachine = tk.BooleanVar()
@@ -243,7 +245,7 @@ class Interface:
                 cph = int(cphEntry.get())
                 noz = int(nozHeads.get())
                 if smdMachine.get() == False:
-                    self.machines[name] = Machine(name, cph, noz)
+                    self.machines[name] = Machine(name, cph, noz, smdMachine.get())
                     return close()
                 args = {
                     "checkpoint": [int(checkpointX.get()), int(checkpointY.get())],
@@ -255,17 +257,18 @@ class Interface:
                         {"feedercart_4": [feedercart_4x.get(), feedercart_4y.get()]}
                     ]
                 }
-                self.machines[name] = Machine(name, cph, noz, offsets=args)
+                self.machines[name] = Machine(name, cph, noz, smdMachine.get(), offsets=args)
                 close()
             except Exception as e:
                 tk.Label(top, text='Please only use Numbers for CPH and Nozzle Heads').grid(row=51, column=1)
             
         def load():
+            self.machines.clear()
             data = self.__openNew()
             if data == None:
                 return
             for i in data['machines']:
-                self.machines[i['machine']] = Machine(i['machine'], i['cph'], i['nozHeads'], i['offsets'])
+                self.machines[i['machine']] = Machine(i['machine'], i['cph'], i['nozHeads'], i['SMD'], i['offsets'])
             close()
 
         def nextMachine():
@@ -321,11 +324,12 @@ class Interface:
             self.__saveAs(data)
         
         def load():
+            self.machines.clear()
             data = self.__openNew()
             if data == None:
                 return
             for i in data['machines']:
-                self.machines[i['machine']] = Machine(i['machine'], i['cph'], i['nozHeads'], i['offsets'])
+                self.machines[i['machine']] = Machine(i['machine'], i['cph'], i['nozHeads'], i['SMD'], i['offsets'])
             close()
             self.__viewMachines()
 
@@ -346,8 +350,12 @@ class Interface:
         top.title('Options')
         
         def callback():
-            self.config.set('default', 'randominterruptmax', str(randominterruptmax.get()))
-            self.config.set('default', 'randominterruptmin', str(randominterruptmin.get()))
+            max = randominterruptmax.get()
+            min = randominterruptmin.get()
+            if min > max:
+                return tk.Label(top, text='The maximum interrupt value needs to be higher then the minimum!', foreground='red', wraplengt=200).pack()
+            self.config.set('default', 'randominterruptmax', str(max))
+            self.config.set('default', 'randominterruptmin', str(min))
             top.withdraw()
             return True
         tk.Label(top, text='Random Interruptions Max').pack()
@@ -399,12 +407,24 @@ class Interface:
             if len(self.machines) == 0:
                 self.__setupMachines()
                 self.conButton.wait_variable(self.button_pressed)
-            data = DataLoader(path)
-            manufacturing = Manufacturing(data(), list(self.machines.values())[0] )
-            simulationData = manufacturing(plotPCB=True, multithread=self.muiltthread.get())
-            randomInterrupt = (0, 0) if self.randomInterupt.get() == False else (0, 30)
+            coordX = []
+            coordY = []
+            machineTime = {}
+            for i in self.machines:
+                data = DataLoader(path)
+                manufacturing = Manufacturing(data(), self.machines[i] )
+                if self.machines[i].SMD == False:
+                    simulationData = manufacturing.coating()
+                    machineTime[self.machines[i].machineName] = simulationData
+                    continue
+                simulationData = manufacturing(plotPCB=True, multithread=self.multithread.get())
+                coordX.append(simulationData['plot_x'])
+                coordY.append(simulationData['plot_y'])
+                machineTime[self.machines[i].machineName] = simulationData['time']
+            
+            randomInterrupt = (0, 0) if self.randomInterupt.get() == False else (self.config.getint('default', 'randominterruptmin'), self.config.getint('default', 'randominterruptmax'))
             controller = Controller(self.mainframe)
-            controller(simulationData['plot_x'], simulationData['plot_y'], simulationData['time'], int(self.numManu.get()), randomInterrupt)
+            controller(coordX, coordY, machineTime, int(self.numManu.get()), randomInterrupt)
         #except Exception as e:
             #return self.errors.handle(e)
         
