@@ -42,8 +42,6 @@ class DataLoader():
 
     data = data.rename(columns={'Component Code': 'Code'})
     components_data = components_data.rename(columns={'Component Code': 'index', 'Priority Nozzle No.': 'Nozzle_No'})
-    print(data)
-    print(components_data)
 
     # replace commas with decimal points
     data['X'] = data['X'].replace({',': '.'}, regex=True).astype(float)
