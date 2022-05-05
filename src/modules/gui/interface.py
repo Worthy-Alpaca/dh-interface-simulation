@@ -1,7 +1,8 @@
-
 from pathlib import Path
 import tkinter as tk
 from types import FunctionType
+import configparser
+from os.path import exists
 
 import sys
 import os
@@ -16,12 +17,13 @@ from gui.controller.controller import Controller
 from simulation.dataloader import DataLoader
 from simulation.manufacturing import Manufacturing
 from simulation.machine import Machine
-from tkinter import filedialog, PhotoImage, ttk
+from tkinter import filedialog, PhotoImage, ttk, messagebox
 from tkcalendar import Calendar
 
 class Interface:
     def __init__(self) -> None:
         self.mainframe = tk.Tk()
+        self.mainframe.protocol("WM_DELETE_WINDOW", self.__onClose)
         self.mainframe.title('SMD Produktion')
         self.mainframe.geometry('1200x750')
         photo = PhotoImage(file = os.getcwd() + os.path.normpath('/src/assets/logo.png'))
@@ -30,6 +32,8 @@ class Interface:
         self.machines = {}
         self.dateLabel1 = tk.Label(self.mainframe).grid(row=1, column=3)
         self.dateLabel2 = tk.Label(self.mainframe).grid(row=1, column=5)
+        self.config = configparser.ConfigParser()
+        self.__configInit()
 
         """ Create interface elements"""
         menubar = tk.Menu(self.mainframe)
@@ -38,7 +42,7 @@ class Interface:
             'Load': self.__openNew,
             'Save': self.__saveAs,
             'seperator': '',
-            'Exit': self.__close
+            'Exit': self.__onClose
         }
         setupMenu = {
             'Add Machine': self.__setupMachines,
@@ -57,12 +61,26 @@ class Interface:
         """ Create error handling capabilities """
         self.errors = ErrorHandler(self.mainframe)
 
+    def __configInit(self):
+        path = os.getcwd() + os.path.normpath('/data/settings/settings.ini')
+        if exists(path):
+            return self.config.read(path)
+        
+        self.config.add_section('default')
+        self.config.set('default', 'randomInterruptMax', '0')
+        self.config.set('default', 'randomInterruptMin', '0')
+        self.config.set('default', 'multithreading', 'false')
+        self.config.set('default', 'randomInterrupt', 'false')
+
     
     def __call__(self, *args: any, **kwds: any) -> any:
         self.mainframe.mainloop()
-
-    def __close(self):
-        self.mainframe.quit()
+    
+    def __onClose(self):
+        if messagebox.askokcancel("Quit", "Do you want to quit?"):
+            with open(os.getcwd() + os.path.normpath('/data/settings/settings.ini'), 'w') as configfile:
+                self.config.write(configfile)
+            self.mainframe.destroy()
 
     def __dummy(self, text = ''):
         print(text)
@@ -87,11 +105,11 @@ class Interface:
     def __createOptionsMenu(self, menubar: tk.Menu):
         filemenu = tk.Menu(menubar, tearoff=0)
         self.muiltthread = tk.BooleanVar()
-        self.muiltthread.set(True)
-        filemenu.add_checkbutton(label='Use Multithreading', var=self.muiltthread)
+        self.muiltthread.set(self.config.getboolean('default', 'multithreading'))
+        filemenu.add_checkbutton(label='Use Multithreading', var=self.muiltthread, command=lambda: self.config.set('default', 'multithreading', str(self.muiltthread.get())))
         self.randomInterupt = tk.BooleanVar()
-        self.randomInterupt.set(True)
-        filemenu.add_checkbutton(label='Use Random Interuptions', var=self.randomInterupt)
+        self.randomInterupt.set(self.config.getboolean('default', 'randomInterrupt'))
+        filemenu.add_checkbutton(label='Use Random Interuptions', var=self.randomInterupt, command=lambda: self.config.set('default', 'randomInterrupt', str(self.randomInterupt.get())))
         filemenu.add_separator()
         filemenu.add_command(label='Options', command=self.__setOptions)
         menubar.add_cascade(label='Options', menu=filemenu)
@@ -133,7 +151,7 @@ class Interface:
         top = tk.Toplevel(self.mainframe)
         cal = Calendar(top, font="Arial 14", selectmode='day')
 
-        def getDate(cal):
+        def getDate(cal: Calendar):
             top.withdraw()
             self.calDate[i] = cal.selection_get()
             self.__createLabel(posX, posY, self.calDate[i])
@@ -326,7 +344,22 @@ class Interface:
         top = tk.Toplevel(self.mainframe)
         top.geometry('300x150')
         top.title('Options')
-        tk.Label(top, text='Placeholder').pack()
+        
+        def callback():
+            self.config.set('default', 'randominterruptmax', str(randominterruptmax.get()))
+            self.config.set('default', 'randominterruptmin', str(randominterruptmin.get()))
+            top.withdraw()
+            return True
+        tk.Label(top, text='Random Interruptions Max').pack()
+        randominterruptmax = tk.IntVar()
+        randominterruptmax.set(self.config.getint('default', 'randominterruptmax'))
+        tk.Entry(top, textvariable=randominterruptmax).pack()
+        tk.Label(top, text='Random Interruptions Min').pack()
+        randominterruptmin = tk.IntVar()
+        randominterruptmin.set(self.config.getint('default', 'randominterruptmin'))
+        tk.Entry(top, textvariable=randominterruptmin).pack()
+
+        ttk.Button(top, text='OK', command=callback).pack()
 
     def __new(self):
         self.numManu.delete(0, 'end')
@@ -369,7 +402,7 @@ class Interface:
             data = DataLoader(path)
             manufacturing = Manufacturing(data(), list(self.machines.values())[0] )
             simulationData = manufacturing(plotPCB=True, multithread=self.muiltthread.get())
-            randomInterrupt = (0, 30) if self.randomInterupt == True else (0, 0)
+            randomInterrupt = (0, 0) if self.randomInterupt.get() == False else (0, 30)
             controller = Controller(self.mainframe)
             controller(simulationData['plot_x'], simulationData['plot_y'], simulationData['time'], int(self.numManu.get()), randomInterrupt)
         #except Exception as e:
