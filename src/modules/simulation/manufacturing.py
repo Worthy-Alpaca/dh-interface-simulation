@@ -49,7 +49,10 @@ class Manufacturing():
     #print('path length:', path_length)
     return path_length / velocity
 
-  def calcTime(self, offset_row):
+  def calcTime(self, offset_row: tuple):
+    """
+    Calculates the time for a given offset
+    """
     def isNan(string):
       return string != string
   
