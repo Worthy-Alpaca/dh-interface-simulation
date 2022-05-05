@@ -35,10 +35,15 @@ class DataLoader():
     neededColumns_Data = ['Component Code', 'X', 'Y', 'Task']
     neededColumns_Components = ['Component Code', 'Placement(Acceleration):X', 'Placement(Acceleration):Y', 'Priority Nozzle No.']
     neededColumns_Feeder = ['Component Code', 'FeedStyle', 'ST No.']
-    data = self.product_data[neededColumns_Data].rename(columns={'Component Code': 'Code'})
-    components_data = self.product_components_data[neededColumns_Components].rename(columns={'Component Code': 'index', 'Priority Nozzle No.': 'Nozzle_No'})
+    data = self.product_data[neededColumns_Data]#.rename(columns={'Component Code': 'Code'})
+    components_data = self.product_components_data[neededColumns_Components]#.rename(columns={'Component Code': 'index', 'Priority Nozzle No.': 'Nozzle_No'})
     components_feeder_data = self.product_feeder_data[neededColumns_Feeder].rename(columns={'Component Code': 'index'})
+    data = pd.merge(left=data, left_on='Component Code', right=components_data, right_on='Component Code', how='left')
 
+    data = data.rename(columns={'Component Code': 'Code'})
+    components_data = components_data.rename(columns={'Component Code': 'index', 'Priority Nozzle No.': 'Nozzle_No'})
+    print(data)
+    print(components_data)
 
     # replace commas with decimal points
     data['X'] = data['X'].replace({',': '.'}, regex=True).astype(float)
