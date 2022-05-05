@@ -33,7 +33,6 @@ class Interface:
 
         """ Create interface elements"""
         menubar = tk.Menu(self.mainframe)
-        #self.__createFileMenu(menubar)
         fileMenu = {
             'New': self.__new,
             'Load': self.__openNew,
@@ -370,10 +369,9 @@ class Interface:
             data = DataLoader(path)
             manufacturing = Manufacturing(data(), list(self.machines.values())[0] )
             simulationData = manufacturing(plotPCB=True, multithread=self.muiltthread.get())
-            print(simulationData['time'])
-            avg = simulationData['time'] * int(self.numManu.get())
-            #self.__createLabel(2, 1, avg)
-            Controller(self.mainframe)(simulationData['plot_x'], simulationData['plot_y'], simulationData['time'], int(self.numManu.get()))
+            randomInterrupt = (0, 30) if self.randomInterupt == True else (0, 0)
+            controller = Controller(self.mainframe)
+            controller(simulationData['plot_x'], simulationData['plot_y'], simulationData['time'], int(self.numManu.get()), randomInterrupt)
         #except Exception as e:
             #return self.errors.handle(e)
         
