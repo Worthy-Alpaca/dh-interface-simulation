@@ -37,11 +37,13 @@ class DataLoader():
     neededColumns_Feeder = ['Component Code', 'FeedStyle', 'ST No.']
     data = self.product_data[neededColumns_Data]#.rename(columns={'Component Code': 'Code'})
     components_data = self.product_components_data[neededColumns_Components]#.rename(columns={'Component Code': 'index', 'Priority Nozzle No.': 'Nozzle_No'})
-    components_feeder_data = self.product_feeder_data[neededColumns_Feeder].rename(columns={'Component Code': 'index'})
+    components_feeder_data = self.product_feeder_data[neededColumns_Feeder]#.rename(columns={'Component Code': 'index'})
     data = pd.merge(left=data, left_on='Component Code', right=components_data, right_on='Component Code', how='left')
-
+    components_data = pd.merge(left=components_data, left_on='Component Code', right=components_feeder_data, right_on='Component Code', how='left')
+    
     data = data.rename(columns={'Component Code': 'Code'})
-    components_data = components_data.rename(columns={'Component Code': 'index', 'Priority Nozzle No.': 'Nozzle_No'})
+    components_data = components_data.rename(columns={'Component Code': 'index', 'Priority Nozzle No.': 'Nozzle_No', 'ST No.': 'ST_No'})
+    components_feeder_data = components_feeder_data.rename(columns={'Component Code': 'index'})
 
     # replace commas with decimal points
     data['X'] = data['X'].replace({',': '.'}, regex=True).astype(float)
@@ -84,7 +86,7 @@ class DataLoader():
     components['Pickup_Y'] = 0
     components['Pickup_X'] = range(len(components.index))
     components = pd.merge(left=components, right= components_data, left_on='index', right_on='index', how='left').drop_duplicates()
-    components = pd.merge(left=components, right= components_feeder_data, left_on='index', right_on='index', how='left').drop_duplicates()
+    #components = pd.merge(left=components, right= components_feeder_data, left_on='index', right_on='index', how='left').drop_duplicates()
     components = pd.merge(left=components, right= self.global_Feeder_Data, left_on='index', right_on='Component Code', how='left').drop_duplicates()
     components = components.drop(['Component Code'], axis=1)
     components['mean_acceleration'] = components['mean_acceleration'].fillna(1000.0)

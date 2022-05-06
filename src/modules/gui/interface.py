@@ -170,12 +170,12 @@ class Interface:
 
         tk.Label(top, text='CPH:').grid(row=1, column=0)
         cphEntry = tk.Entry(top)
-        cphEntry.insert('end', '0')
+        cphEntry.insert('end', '1')
         cphEntry.grid(row=1, column=1)
         
         tk.Label(top, text='Nozzle Heads:').grid(row=2, column=0)
         nozHeads = tk.Entry(top)
-        nozHeads.insert('end', '0')
+        nozHeads.insert('end', '1')
         nozHeads.grid(row=2, column=1)
         self.button_pressed = tk.StringVar()
         smdMachine = tk.BooleanVar()
@@ -188,42 +188,55 @@ class Interface:
         tk.Label(top, text='Y').grid(row=4, column=2)
         tk.Label(top, text='Checkpoint:').grid(row=5, column=0)
         checkpointX = tk.Entry(top)
+        checkpointX.insert('end', '0')
         checkpointX.grid(row=5, column=1)
         checkpointY = tk.Entry(top)
+        checkpointY.insert('end', '0')
         checkpointY.grid(row=5, column=2)
 
         tk.Label(top, text='PCB:').grid(row=6, column=0)
         pcbX = tk.Entry(top)
+        pcbX.insert('end', '0')
         pcbX.grid(row=6, column=1)
         pcbY = tk.Entry(top)
+        pcbY.insert('end', '0')
         pcbY.grid(row=6, column=2)
+        
         """ feedercart 1"""
         row1 = 7
-        tk.Label(top, text='Feedercart 1:').grid(row=row1, column=0)
+        tk.Label(top, text='Feedercart Front Left:').grid(row=row1, column=0)
         feedercart_1x = tk.Entry(top)
+        feedercart_1x.insert('end', '0')
         feedercart_1x.grid(row=row1, column=1)
         feedercart_1y = tk.Entry(top)
+        feedercart_1y.insert('end', '0')
         feedercart_1y.grid(row=row1, column=2)
         """ feedercart 2"""
         row2 = 8
-        tk.Label(top, text='Feedercart 2:').grid(row=row2, column=0)
+        tk.Label(top, text='Feedercart Back Left:').grid(row=row2, column=0)
         feedercart_2x = tk.Entry(top)
+        feedercart_2x.insert('end', '0')
         feedercart_2x.grid(row=row2, column=1)
         feedercart_2y = tk.Entry(top)
+        feedercart_2y.insert('end', '0')
         feedercart_2y.grid(row=row2, column=2)
         """ feedercart 3"""
         row3 = 9
-        tk.Label(top, text='Feedercart 3:').grid(row=row3, column=0)
+        tk.Label(top, text='Feedercart Front Right:').grid(row=row3, column=0)
         feedercart_3x = tk.Entry(top)
+        feedercart_3x.insert('end', '0')
         feedercart_3x.grid(row=row3, column=1)
         feedercart_3y = tk.Entry(top)
+        feedercart_3y.insert('end', '0')
         feedercart_3y.grid(row=row3, column=2)
         """ feedercart 4"""
         row4 = 10
-        tk.Label(top, text='Feedercart 4:').grid(row=row4, column=0)
+        tk.Label(top, text='Feedercart Back Right:').grid(row=row4, column=0)
         feedercart_4x = tk.Entry(top)
+        feedercart_4x.insert('end', '0')
         feedercart_4x.grid(row=row4, column=1)
         feedercart_4y = tk.Entry(top)
+        feedercart_4y.insert('end', '0')
         feedercart_4y.grid(row=row4, column=2)
 
         
@@ -251,10 +264,10 @@ class Interface:
                     "checkpoint": [int(checkpointX.get()), int(checkpointY.get())],
                     "pcb": [int(pcbX.get()), int(pcbY.get())],
                     "feedercarts": [
-                        {"feedercart_1": [int(feedercart_1x.get()), int(feedercart_1y.get())]},
-                        {"feedercart_2": [int(feedercart_2x.get()), int(feedercart_2y.get())]},
-                        {"feedercart_3": [feedercart_3x.get(), feedercart_3y.get()]},
-                        {"feedercart_4": [feedercart_4x.get(), feedercart_4y.get()]}
+                        {"ST-FL": [int(feedercart_1x.get()), int(feedercart_1y.get())]},
+                        {"ST-RL": [int(feedercart_2x.get()), int(feedercart_2y.get())]},
+                        {"ST-FR": [feedercart_3x.get(), feedercart_3y.get()]},
+                        {"ST-RR": [feedercart_4x.get(), feedercart_4y.get()]}
                     ]
                 }
                 self.machines[name] = Machine(name, cph, noz, smdMachine.get(), offsets=args)

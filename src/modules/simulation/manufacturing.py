@@ -35,6 +35,10 @@ class Manufacturing():
       self.OFFSET_X = machine.offsets['pcb'][0]
       self.OFFSET_Y = machine.offsets['pcb'][1]
       self.CHECKPOINT = (machine.offsets['checkpoint'][0], machine.offsets['checkpoint'][1])
+      self.feedercarts = {}
+      for machine in machine.offsets['feedercarts']:
+        for key in machine:
+          self.feedercarts[key] = machine[key]
       
     
 
@@ -70,9 +74,12 @@ class Manufacturing():
         continue
       # calculating the path, adding offset for coordinate transformation
       lookupTable = self.components[self.components['index'].str.match(row.Code)]
-      #print(lookupTable)
-      location_vector_A = (lookupTable.Pickup_X.max(), lookupTable.Pickup_Y.max())
+      #print(lookupTable.info())
+      #location_vector_A = (lookupTable.Pickup_X.max(), lookupTable.Pickup_Y.max())
+      cart_coordinates = self.feedercarts[lookupTable.FeedStyle.max()]
+      location_vector_A = (int(cart_coordinates[0]) + (lookupTable.ST_No.max() * 10), int(cart_coordinates[1]))
       location_vector_B = ((row.X + self.OFFSET_X + offset_row[0]), (row.Y + self.OFFSET_Y + offset_row[1]))
+      plot_coordinates = ((row.X + offset_row[0]), (row.Y + offset_row[1]))
       velocity = self.machine.velocity * ( lookupTable.mean_acceleration.max() / 1000)
       
       if self.multiPickOption == True:
@@ -173,8 +180,8 @@ class Manufacturing():
         TIME = (self.__calcVector(location_vector_B, next_pickup_vector, velocity)) + TIME + DROPOFF + PICKUP
       
       # saving coordinates for visual plotting
-      self.plotting_x.append(location_vector_B[0])
-      self.plotting_y.append(location_vector_B[1])
+      self.plotting_x.append(plot_coordinates[0])
+      self.plotting_y.append(plot_coordinates[1])
     return {
       'time': TIME,
       'plot_x': self.plotting_x,
