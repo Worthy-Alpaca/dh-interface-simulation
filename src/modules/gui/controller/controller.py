@@ -3,15 +3,15 @@
 import os
 import random
 import sys
-
+import tkinter as tk
 from gui.parent.canvas import Canvas
 
 class Controller(Canvas):
     """ Draws PCB on canvas """
-    def __init__(self, frame) -> None:
+    def __init__(self, frame: tk.Tk) -> None:
         super().__init__(frame)
 
-    def __call__(self, data_x, data_y, time: dict, numParts: int, randomInterupt: tuple = (0, 0), prodName: str = '') -> any:
+    def __call__(self, coords: dict, time: dict, numParts: int, randomInterupt: tuple = (0, 0), prodName: str = '') -> any:
         self.figure.clear()
         plot = self.figure.add_subplot(121)
         ax = self.figure.add_subplot(122)
@@ -37,5 +37,7 @@ class Controller(Canvas):
         
         ax.text(0.05, 0.95, textstr, transform=ax.transAxes, fontsize=14,
             verticalalignment='top', bbox=props)
-        plot.scatter(data_x, data_y)
+        for key in coords:
+            plot.scatter(coords[key]['X'], coords[key]['Y'])
+        plot.legend(tuple(coords.keys()), loc='upper left')
         self.canvas.draw()
