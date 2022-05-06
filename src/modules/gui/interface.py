@@ -201,7 +201,7 @@ class Interface:
         pcbY = tk.Entry(top)
         pcbY.insert('end', '0')
         pcbY.grid(row=6, column=2)
-        
+
         """ feedercart 1"""
         row1 = 7
         tk.Label(top, text='Feedercart Front Left:').grid(row=row1, column=0)
@@ -437,7 +437,8 @@ class Interface:
             
             randomInterrupt = (0, 0) if self.randomInterupt.get() == False else (self.config.getint('default', 'randominterruptmin'), self.config.getint('default', 'randominterruptmax'))
             controller = Controller(self.mainframe)
-            controller(coordX, coordY, machineTime, int(self.numManu.get()), randomInterrupt)
+            #controller(coordX, coordY, machineTime, int(self.numManu.get()), randomInterrupt, prodName=self.product.get())
+            controller(data_x=coordX, data_y=coordY, time=machineTime, numParts=int(self.numManu.get()), randomInterupt=randomInterrupt, prodName=self.product.get())
         #except Exception as e:
             #return self.errors.handle(e)
         

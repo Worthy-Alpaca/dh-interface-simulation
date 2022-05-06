@@ -11,7 +11,7 @@ class Controller(Canvas):
     def __init__(self, frame) -> None:
         super().__init__(frame)
 
-    def __call__(self, data_x, data_y, time: dict, numParts: int, randomInterupt: tuple = (0, 0)) -> any:
+    def __call__(self, data_x, data_y, time: dict, numParts: int, randomInterupt: tuple = (0, 0), prodName: str = '') -> any:
         self.figure.clear()
         plot = self.figure.add_subplot(121)
         ax = self.figure.add_subplot(122)
@@ -22,6 +22,8 @@ class Controller(Canvas):
             sumtime.append(runtime + random.randint(randomInterupt[0], randomInterupt[1]))
         
         textstr = '\n'.join((
+            f'Product: {prodName} ',
+            '',
             f'Overall time needed: {round(sum(sumtime), 2)} Seconds',
             f'Average Time: {round(sum(sumtime) / numParts, 2)} Seconds ', 
             f'Highest time: {round(max(sumtime), 2)} Seconds',))
