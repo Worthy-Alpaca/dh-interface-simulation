@@ -93,7 +93,8 @@ class Manufacturing():
               break
             next_index = next_index +1
           nextLookUpTable = self.components[self.components['index'].str.match( self.data.loc[ next_index , 'Code'])]
-          next_pickup = (nextLookUpTable.Pickup_X.max(), nextLookUpTable.Pickup_Y.max())
+          nextcart_coordinates = self.feedercarts[nextLookUpTable.FeedStyle.max()]
+          next_pickup = (int(nextcart_coordinates[0]) + (nextLookUpTable.ST_No.max() * 10), int(nextcart_coordinates[1]))
           TIME = self.__calcVector(location_vector_A, next_pickup, velocity) + TIME + PICKUP
 
         elif row.Task == 'End Multiple Pickup':
@@ -126,7 +127,8 @@ class Manufacturing():
               break
             next_index = next_index +1
           nextLookUpTable = self.components[self.components['index'].str.match( self.data.loc[ next_index , 'Code']  )]
-          next_pickup_vector = (nextLookUpTable.Pickup_X.max(), nextLookUpTable.Pickup_Y.max())
+          nextcart_coordinates = self.feedercarts[nextLookUpTable.FeedStyle.max()]
+          next_pickup_vector = (int(nextcart_coordinates[0]) + (nextLookUpTable.ST_No.max() * 10), int(nextcart_coordinates[1]))
           TIME = (self.__calcVector(next_pickup_vector, current_pos, velocity)) + TIME + DROPOFF
 
         elif row.Task == 'Fiducial':
@@ -147,7 +149,8 @@ class Manufacturing():
               break
             next_index = next_index +1
           nextLookUpTable = self.components[self.components['index'].str.match( self.data.loc[ next_index , 'Code']  )]
-          next_pickup_vector = (nextLookUpTable.Pickup_X.max(), nextLookUpTable.Pickup_Y.max())
+          nextcart_coordinates = self.feedercarts[nextLookUpTable.FeedStyle.max()]
+          next_pickup_vector = (int(nextcart_coordinates[0]) + (nextLookUpTable.ST_No.max() * 10), int(nextcart_coordinates[1]))
 
           TIME = (self.__calcVector(next_pickup_vector, location_vector_B, velocity) ) + TIME + DROPOFF + PICKUP
 
@@ -167,7 +170,8 @@ class Manufacturing():
             break
           next_index = next_index +1
         nextLookUpTable = self.components[self.components['index'].str.match( self.data.loc[ next_index , 'Code']  )]
-        next_pickup_vector = (nextLookUpTable.Pickup_X.max(), nextLookUpTable.Pickup_Y.max())
+        nextcart_coordinates = self.feedercarts[nextLookUpTable.FeedStyle.max()]
+        next_pickup_vector = (int(nextcart_coordinates[0]) + (nextLookUpTable.ST_No.max() * 10), int(nextcart_coordinates[1]))
         TIME = (self.__calcVector(location_vector_B, next_pickup_vector, velocity)) + TIME + DROPOFF + PICKUP
       
       # saving coordinates for visual plotting
