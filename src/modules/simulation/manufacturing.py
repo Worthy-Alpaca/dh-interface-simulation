@@ -14,7 +14,7 @@ sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 from simulation.machine import Machine
 global XMOD 
 XMOD = 1
-RANDOM_PROBLEMS = (0,0)#(30, 300)
+RANDOM_PROBLEMS = (0,0)
 DROPOFF = 0.1
 PICKUP = 0.1
 
@@ -50,7 +50,7 @@ class Manufacturing():
     """
     vector_AB = ((float(vectorB[0]) - float(vectorA[0])), (float(vectorB[1]) - float(vectorA[1])))
     path_length = math.sqrt(vector_AB[0]**2 + vector_AB[1]**2)
-    #print('path length:', path_length)
+
     return path_length / velocity
 
   def calcTime(self, offset_row: tuple):
@@ -60,13 +60,10 @@ class Manufacturing():
     def isNan(string):
       return string != string
   
-    #print('Offsets', type(self.offsets))
     TIME = 0
     self.plotting_x = []
     self.plotting_y = []
     multiPick = deque()
-    #print('Calculating assembly time')
-    #print(offset_row)
     for index, row in self.data.iterrows():
       # check for NaN values and continue if found
       if isNan(row.Code):
@@ -74,8 +71,7 @@ class Manufacturing():
         continue
       # calculating the path, adding offset for coordinate transformation
       lookupTable = self.components[self.components['index'].str.match(row.Code)]
-      #print(lookupTable.info())
-      #location_vector_A = (lookupTable.Pickup_X.max(), lookupTable.Pickup_Y.max())
+      
       cart_coordinates = self.feedercarts[lookupTable.FeedStyle.max()]
       location_vector_A = (int(cart_coordinates[0]) + (lookupTable.ST_No.max() * 10), int(cart_coordinates[1]))
       location_vector_B = ((row.X + self.OFFSET_X + offset_row[0]), (row.Y + self.OFFSET_Y + offset_row[1]))
@@ -138,7 +134,6 @@ class Manufacturing():
           TIME = (path_length) + TIME 
 
         else:
-          #print('==  single pick, multipick opt  ==')
           # calculate the path/time for a single pickup
           path_length = self.__calcVector(location_vector_A, self.CHECKPOINT, velocity)
           checkpoint = self.__calcVector(self.CHECKPOINT, location_vector_B, velocity)
@@ -153,9 +148,6 @@ class Manufacturing():
             next_index = next_index +1
           nextLookUpTable = self.components[self.components['index'].str.match( self.data.loc[ next_index , 'Code']  )]
           next_pickup_vector = (nextLookUpTable.Pickup_X.max(), nextLookUpTable.Pickup_Y.max())
-          #print('it breaks here')
-          #print(self.data.loc[ next_index , 'Code'])
-          #print(self.components[self.components['index'].str.match( self.data.loc[ next_index , 'Code']  )])
 
           TIME = (self.__calcVector(next_pickup_vector, location_vector_B, velocity) ) + TIME + DROPOFF + PICKUP
 
@@ -170,7 +162,6 @@ class Manufacturing():
         TIME = (path_length) + TIME + DROPOFF + checkpoint
         next_index = index + 1
         while next_index not in self.data.index:
-          #next_index = next_index +1
           if next_index > self.data.index.max():
             next_index = next_index - 1
             break
@@ -233,11 +224,8 @@ class Manufacturing():
     velocity = 20 # mm/s
 
     # highest coordinate on PCB
-    from operator import itemgetter
-
-    offset = max(self.offsets)#,key=itemgetter(1))
+    offset = max(self.offsets)
     high = self.data['Y'].max() + offset[1]
-    print(high)
     return (math.sqrt(0**2 + high**2) / velocity)
 
 
