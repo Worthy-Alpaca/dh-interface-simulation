@@ -5,8 +5,8 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 import tkinter as tk
 
 class Canvas(tk.Canvas):
-    def __init__(self, frame) -> None:
-        """"""
+    def __init__(self, frame) -> tk.Canvas:
+        """ Creates the canvas on which to draw """
         self.mainframe = frame
         self.figure = Figure(figsize=(11.6, 6.5), dpi=100)
         self.canvas = FigureCanvasTkAgg(self.figure, master=self.mainframe)
