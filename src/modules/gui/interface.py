@@ -61,7 +61,7 @@ class Interface:
         """ Create error handling capabilities """
         self.errors = ErrorHandler(self.mainframe)
 
-    def __configInit(self):
+    def __configInit(self) -> (list[str] | None):
         path = os.getcwd() + os.path.normpath('/data/settings/settings.ini')
         if exists(path):
             return self.config.read(path)
@@ -71,21 +71,20 @@ class Interface:
         self.config.set('default', 'randomInterruptMin', '0')
         self.config.set('default', 'multithreading', 'false')
         self.config.set('default', 'randomInterrupt', 'false')
-
     
-    def __call__(self, *args: any, **kwds: any) -> any:
+    def __call__(self, *args: any, **kwds: any) -> None:
         self.mainframe.mainloop()
     
-    def __onClose(self):
+    def __onClose(self) -> None:
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
             with open(os.getcwd() + os.path.normpath('/data/settings/settings.ini'), 'w') as configfile:
                 self.config.write(configfile)
             self.mainframe.destroy()
 
-    def __dummy(self, text = ''):
+    def __dummy(self, text = '') -> None:
         print(text)
 
-    def __loadConfig(self):
+    def __loadConfig(self) -> None:
         data = self.__openNew()
         if data == None:
             return
@@ -93,7 +92,7 @@ class Interface:
             self.machines[i['machine']] = Machine(i['machine'], i['cph'], i['nozHeads'], i['SMD'], i['offsets'])
         self.__viewMachines()
 
-    def __createMenu(self, menubar: tk.Menu, label: str, data: dict):
+    def __createMenu(self, menubar: tk.Menu, label: str, data: dict) -> None:
         filemenu = tk.Menu(menubar, tearoff=0)
         for key in data:
             if key == 'seperator':
@@ -102,7 +101,7 @@ class Interface:
                 filemenu.add_command(label=key, command=data[key])
         menubar.add_cascade(label=label, menu=filemenu)
 
-    def __createOptionsMenu(self, menubar: tk.Menu):
+    def __createOptionsMenu(self, menubar: tk.Menu) -> tk.Menu:
         filemenu = tk.Menu(menubar, tearoff=0)
         self.multithread = tk.BooleanVar()
         self.multithread.set(self.config.getboolean('default', 'multithreading'))
@@ -126,7 +125,7 @@ class Interface:
         label = tk.Label(master=self.mainframe, text=text)
         label.grid(column=posX, row=posY)
 
-    def __createForms(self):
+    def __createForms(self) -> None:
         tk.Label(self.mainframe, text='Program:').grid(row=0, column=0)
         tk.Label(self.mainframe, text='Parts to manufacture:').grid(row=1, column=0)
         tk.Label(self.mainframe, text='Start Date:').grid(row=0, column=4)
@@ -147,7 +146,7 @@ class Interface:
         self.date1 = self.__createButton(5, 0, 'Select', function=lambda: self.__showCal('start', 5, 1))
         self.date2 = self.__createButton(7, 0, 'Select', function=lambda: self.__showCal('end', 7, 1))
 
-    def __showCal(self, i, posX, posY):
+    def __showCal(self, i: str, posX: int, posY: int) -> tk.Toplevel:
         top = tk.Toplevel(self.mainframe)
         cal = Calendar(top, font="Arial 14", selectmode='day')
 
@@ -159,7 +158,7 @@ class Interface:
         cal.pack(fill='both', expand=True)
         ttk.Button(top, text='ok', command=lambda: getDate(cal)).pack()
 
-    def __setupMachines(self):
+    def __setupMachines(self) -> tk.Toplevel:
         top = tk.Toplevel(self.mainframe)
         #top.geometry('300x300')
         top.title('Add Machine')
@@ -300,7 +299,7 @@ class Interface:
         self.__createMenu(menubar, 'File', fileMenu)
         top.config(menu=menubar)
 
-    def __viewMachines(self):
+    def __viewMachines(self) -> tk.Toplevel:
         top = tk.Toplevel(self.mainframe)
         top.geometry('300x200')
         top.title('Machines')
@@ -357,7 +356,7 @@ class Interface:
         top.config(menu=menubar)
         ttk.Button(top, text='ok', command=close).pack()
 
-    def __setOptions(self):
+    def __setOptions(self) -> tk.Toplevel:
         top = tk.Toplevel(self.mainframe)
         top.geometry('300x150')
         top.title('Options')
@@ -382,10 +381,10 @@ class Interface:
 
         ttk.Button(top, text='OK', command=callback).pack()
 
-    def __new(self):
+    def __new(self) -> None:
         self.numManu.delete(0, 'end')
 
-    def __saveAs(self, data: dict):
+    def __saveAs(self, data: dict) -> None:
         file_opt = options = {}
         options['filetypes'] = [('JSON files', '.json'), ('all files', '.*')]
         options['initialdir'] = os.getcwd() + os.path.normpath("/data/presets")
@@ -408,13 +407,13 @@ class Interface:
 
         return data
 
-    def __parseInputSimulation(self):
+    def __parseInputSimulation(self) -> Path:
         if self.product.get() == '':
             return None
         path = Path(os.getcwd() + os.path.normpath('/data/' + self.product.get()))
         return path
 
-    def __simulate(self):
+    def __simulate(self) -> None:
         #try:
             path = self.__parseInputSimulation()
             if len(self.machines) == 0:
@@ -422,6 +421,7 @@ class Interface:
                 self.conButton.wait_variable(self.button_pressed)
             coordX = []
             coordY = []
+            coords = {}
             machineTime = {}
             for i in self.machines:
                 data = DataLoader(path)
@@ -434,11 +434,15 @@ class Interface:
                 coordX.append(simulationData['plot_x'])
                 coordY.append(simulationData['plot_y'])
                 machineTime[self.machines[i].machineName] = simulationData['time']
+                coords[self.machines[i].machineName] = {
+                    'X': simulationData['plot_x'],
+                    'Y': simulationData['plot_y']
+                }
             
             randomInterrupt = (0, 0) if self.randomInterupt.get() == False else (self.config.getint('default', 'randominterruptmin'), self.config.getint('default', 'randominterruptmax'))
             controller = Controller(self.mainframe)
             #controller(coordX, coordY, machineTime, int(self.numManu.get()), randomInterrupt, prodName=self.product.get())
-            controller(data_x=coordX, data_y=coordY, time=machineTime, numParts=int(self.numManu.get()), randomInterupt=randomInterrupt, prodName=self.product.get())
+            controller(coords=coords, time=machineTime, numParts=int(self.numManu.get()), randomInterupt=randomInterrupt, prodName=self.product.get())
         #except Exception as e:
             #return self.errors.handle(e)
         
