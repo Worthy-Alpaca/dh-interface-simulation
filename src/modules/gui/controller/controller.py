@@ -26,7 +26,9 @@ class Controller(Canvas):
             '',
             f'Overall time needed: {round(sum(sumtime), 2)} Seconds',
             f'Average Time: {round(sum(sumtime) / numParts, 2)} Seconds ', 
-            f'Highest time: {round(max(sumtime), 2)} Seconds',))
+            f'Highest time: {round(max(sumtime), 2)} Seconds',
+            '',
+            'Machines'))
         substr = ''
         for key in time:
             substr = substr + f'\n{key} Ideal: {round(time[key], 2)} Seconds'
