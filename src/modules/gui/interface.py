@@ -5,6 +5,7 @@ import configparser
 from os.path import exists
 from numpy import product
 import requests
+import threading
 
 import sys
 import os
@@ -56,7 +57,7 @@ class Interface:
         self.mainframe.config(menu=menubar)
         Canvas(self.mainframe)
         self.__createButton(8, 0, text='Compare', function=self.__dummy)
-        self.__createButton(2, 0, text='Simulate', function=self.__simulate)
+        self.__createButton(2, 0, text='Simulate', function=self.__startSimulation)
         self.__createForms()
         self.__loadConfig()
 
@@ -415,10 +416,13 @@ class Interface:
         path = Path(os.getcwd() + os.path.normpath('/data/' + self.product.get()))
         return path
 
-    def __simulate(self) -> None:
+    def __startSimulation(self):
+        threading.Thread(target=self.__simulate).start()
 
+    def __simulate(self) -> None:
         machineTime = {}
         coords = {}
+        product = self.product.get()
         for i in self.machines:
             machine = self.machines[i]
             product_id = self.product.get()
@@ -440,7 +444,7 @@ class Interface:
         randomInterrupt = (0, 0) if self.randomInterupt.get() == False else (self.config.getint('default', 'randominterruptmin'), self.config.getint('default', 'randominterruptmax'))
         controller = Controller(self.mainframe)
         #controller(coordX, coordY, machineTime, int(self.numManu.get()), randomInterrupt, prodName=self.product.get())
-        controller(coords=coords, time=machineTime, numParts=int(self.numManu.get()), randomInterupt=randomInterrupt, prodName=self.product.get())
+        controller(coords=coords, time=machineTime, numParts=int(self.numManu.get()), randomInterupt=randomInterrupt, prodName=product)
         
 
 
