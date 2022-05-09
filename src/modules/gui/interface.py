@@ -3,6 +3,8 @@ import tkinter as tk
 from types import FunctionType
 import configparser
 from os.path import exists
+from numpy import product
+import requests
 
 import sys
 import os
@@ -414,37 +416,31 @@ class Interface:
         return path
 
     def __simulate(self) -> None:
-        #try:
-            path = self.__parseInputSimulation()
-            if len(self.machines) == 0:
-                self.__setupMachines()
-                self.conButton.wait_variable(self.button_pressed)
-            coordX = []
-            coordY = []
-            coords = {}
-            machineTime = {}
-            for i in self.machines:
-                data = DataLoader(path)
-                manufacturing = Manufacturing(data(), self.machines[i] )
-                if self.machines[i].SMD == False:
-                    simulationData = manufacturing.coating()
-                    machineTime[self.machines[i].machineName] = simulationData
-                    continue
-                simulationData = manufacturing(plotPCB=True, multithread=self.multithread.get())
-                coordX.append(simulationData['plot_x'])
-                coordY.append(simulationData['plot_y'])
-                machineTime[self.machines[i].machineName] = simulationData['time']
+
+        machineTime = {}
+        coords = {}
+        for i in self.machines:
+            machine = self.machines[i]
+            product_id = self.product.get()
+            data = machine.getData()
+            type = 'manufacturing'
+            if self.machines[i].SMD == False:
+                type = 'coating'
+            request = requests.put(f'http://127.0.0.1:5000/simulate/{type}/{product_id}', data = json.dumps(data) )
+            if request.status_code != 200:
+                return self.errors.handle(request.status_code)
+            requestData = request.json()
+            machineTime[self.machines[i].machineName] = requestData['time']
+            if 'plot_x' in requestData:
                 coords[self.machines[i].machineName] = {
-                    'X': simulationData['plot_x'],
-                    'Y': simulationData['plot_y']
-                }
-            
-            randomInterrupt = (0, 0) if self.randomInterupt.get() == False else (self.config.getint('default', 'randominterruptmin'), self.config.getint('default', 'randominterruptmax'))
-            controller = Controller(self.mainframe)
-            #controller(coordX, coordY, machineTime, int(self.numManu.get()), randomInterrupt, prodName=self.product.get())
-            controller(coords=coords, time=machineTime, numParts=int(self.numManu.get()), randomInterupt=randomInterrupt, prodName=self.product.get())
-        #except Exception as e:
-            #return self.errors.handle(e)
+                        'X': requestData['plot_x'],
+                        'Y': requestData['plot_y']
+                    }
+        
+        randomInterrupt = (0, 0) if self.randomInterupt.get() == False else (self.config.getint('default', 'randominterruptmin'), self.config.getint('default', 'randominterruptmax'))
+        controller = Controller(self.mainframe)
+        #controller(coordX, coordY, machineTime, int(self.numManu.get()), randomInterrupt, prodName=self.product.get())
+        controller(coords=coords, time=machineTime, numParts=int(self.numManu.get()), randomInterupt=randomInterrupt, prodName=self.product.get())
         
 
 
