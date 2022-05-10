@@ -1,5 +1,9 @@
 from matplotlib import style
-from gui.parent.canvas import Canvas
+
+try:
+    from src.modules.gui.parent.canvas import Canvas
+except:
+    from modules.gui.parent.canvas import Canvas
 
 import string
 import os

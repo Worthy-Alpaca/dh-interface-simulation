@@ -2,7 +2,11 @@ import os
 import random
 import sys
 import tkinter as tk
-from modules.gui.parent.canvas import Canvas
+
+try:
+    from src.modules.gui.parent.canvas import Canvas
+except:
+    from modules.gui.parent.canvas import Canvas
 from matplotlib.pyplot import style
 
 
