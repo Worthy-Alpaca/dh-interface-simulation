@@ -2,7 +2,8 @@ import os
 import random
 import sys
 import tkinter as tk
-from gui.parent.canvas import Canvas
+from modules.gui.parent.canvas import Canvas
+from matplotlib.pyplot import style
 
 
 class Controller(Canvas):
@@ -57,4 +58,13 @@ class Controller(Canvas):
         for key in coords:
             plot.scatter(coords[key]["X"], coords[key]["Y"])
         plot.legend(tuple(coords.keys()), loc="upper left")
+        self.canvas.draw()
+
+    def wait(self) -> any:
+        self.figure.clear()
+        waitPlot = self.figure.add_subplot(312)
+
+        style.use("ggplot")
+        waitPlot.axis("off")
+        waitPlot.set_title("Loading...", color="green")
         self.canvas.draw()

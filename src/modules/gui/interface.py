@@ -77,6 +77,8 @@ class Interface:
         self.config.set("default", "randomInterruptMin", "0")
         self.config.set("default", "multithreading", "false")
         self.config.set("default", "randomInterrupt", "false")
+        self.config.add_section("network")
+        self.config.set("network", "api_address", "http://127.0.0.1:5000")
 
     def __call__(self, *args: any, **kwds: any) -> None:
         self.mainframe.mainloop()
@@ -389,6 +391,7 @@ class Interface:
         def callback():
             max = randominterruptmax.get()
             min = randominterruptmin.get()
+            address = networkAddress.get()
             if min > max:
                 return tk.Label(
                     top,
@@ -398,6 +401,7 @@ class Interface:
                 ).pack()
             self.config.set("default", "randominterruptmax", str(max))
             self.config.set("default", "randominterruptmin", str(min))
+            self.config.set("network", "api_address", str(address))
             top.withdraw()
             return True
 
@@ -409,6 +413,10 @@ class Interface:
         randominterruptmin = tk.IntVar()
         randominterruptmin.set(self.config.getint("default", "randominterruptmin"))
         tk.Entry(top, textvariable=randominterruptmin).pack()
+        tk.Label(top, text="API Network Address").pack()
+        networkAddress = tk.StringVar()
+        networkAddress.set(self.config.get("network", "api_address"))
+        tk.Entry(top, textvariable=networkAddress).pack()
 
         ttk.Button(top, text="OK", command=callback).pack()
 
@@ -451,6 +459,8 @@ class Interface:
         machineTime = {}
         coords = {}
         product = self.product.get()
+        controller = Controller(self.mainframe)
+        controller.wait()
         for i in self.machines:
             machine = self.machines[i]
             product_id = self.product.get()
@@ -459,7 +469,7 @@ class Interface:
             if self.machines[i].SMD == False:
                 type = "coating"
             request = requests.put(
-                f"http://127.0.0.1:5000/simulate/{type}/{product_id}",
+                f"{self.config.get('network', 'api_address')}/simulate/{type}/{product_id}",
                 data=json.dumps(data),
             )
             if request.status_code != 200:
@@ -480,7 +490,7 @@ class Interface:
                 self.config.getint("default", "randominterruptmax"),
             )
         )
-        controller = Controller(self.mainframe)
+
         controller(
             coords=coords,
             time=machineTime,
