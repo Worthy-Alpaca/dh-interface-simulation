@@ -65,8 +65,12 @@ class Interface:
         self.__createOptionsMenu(menubar)
         self.mainframe.config(menu=menubar)
         Canvas(self.mainframe)
-        self.__createButton(8, 0, text="Compare", function=self.__dummy)
-        self.__createButton(2, 0, text="Simulate", function=self.__startSimulation)
+        self.__createButton(
+            8, 0, text="Compare", function=lambda: self.__startThread(self.__compare)
+        )
+        self.__createButton(
+            2, 0, text="Simulate", function=lambda: self.__startThread(self.__simulate)
+        )
         self.__createForms()
         self.__loadConfig()
 
@@ -452,14 +456,19 @@ class Interface:
 
         return data
 
-    def __parseInputSimulation(self) -> Path:
-        if self.product.get() == "":
-            return None
-        path = Path(os.getcwd() + os.path.normpath("/data/" + self.product.get()))
-        return path
+    def __compare(self) -> None:
+        # startDate = str(self.calDate["start"])
+        # endDate = str(self.calDate["end"])
 
-    def __startSimulation(self):
-        threading.Thread(target=self.__simulate).start()
+        """request = requests.get(
+            f"{self.config.get('network', 'api_address')}/predict/order/?startdate={startDate}&enddate={endDate}"
+        )"""
+        request = requests.get(f"{self.config.get('network', 'api_address')}/")
+        controller = Controller(self.mainframe)
+        controller.error(request.status_code)
+
+    def __startThread(self, target: FunctionType):
+        threading.Thread(target=target).start()
 
     def __simulate(self) -> None:
         machineTime = {}
@@ -479,7 +488,8 @@ class Interface:
                 data=json.dumps(data),
             )
             if request.status_code != 200:
-                return self.errors.handle(request.status_code)
+                error = f"{request.status_code} - {request.reason} "
+                return controller.error(error)
             requestData = request.json()
             machineTime[self.machines[i].machineName] = requestData["time"]
             if "plot_x" in requestData:
