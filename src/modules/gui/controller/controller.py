@@ -72,3 +72,12 @@ class Controller(Canvas):
         waitPlot.axis("off")
         waitPlot.set_title("Loading...", color="green")
         self.canvas.draw()
+
+    def error(self, error) -> any:
+        self.figure.clear()
+        waitPlot = self.figure.add_subplot(312)
+
+        style.use("ggplot")
+        waitPlot.axis("off")
+        waitPlot.set_title(f"An error occured: {error} ", color="red")
+        self.canvas.draw()
