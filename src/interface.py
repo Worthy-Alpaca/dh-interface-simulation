@@ -483,10 +483,13 @@ class Interface:
             type = "manufacturing"
             if self.machines[i].SMD == False:
                 type = "coating"
-            request = requests.put(
-                f"{self.config.get('network', 'api_address')}/simulate/{type}/{product_id}",
-                data=json.dumps(data),
-            )
+            try:
+                request = requests.put(
+                    f"{self.config.get('network', 'api_address')}/simulate/{type}/{product_id}",
+                    data=json.dumps(data),
+                )
+            except Exception as e:
+                return controller.error(e)
             if request.status_code != 200:
                 error = f"{request.status_code} - {request.reason} "
                 return controller.error(error)
