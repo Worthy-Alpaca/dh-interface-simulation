@@ -38,6 +38,8 @@ class Interface:
         self.mainframe.protocol("WM_DELETE_WINDOW", self.__onClose)
         self.mainframe.title("SMD Produktion")
         self.mainframe.geometry("1200x750")
+        # self.mainframe.rowconfigure(0, weight=1)
+        # self.mainframe.columnconfigure(0, weight=1)
         photo = PhotoImage(file=os.getcwd() + os.path.normpath("/src/assets/logo.png"))
         self.mainframe.iconphoto(True, photo)
         self.calDate = {}
@@ -145,6 +147,7 @@ class Interface:
         )
         filemenu.add_separator()
         filemenu.add_command(label="Refresh Programms", command=self.__getAPIData)
+        filemenu.add_separator()
         filemenu.add_command(label="Options", command=self.__setOptions)
         menubar.add_cascade(label="Options", menu=filemenu)
 
