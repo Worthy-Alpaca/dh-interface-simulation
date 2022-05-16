@@ -144,6 +144,7 @@ class Interface:
             ),
         )
         filemenu.add_separator()
+        filemenu.add_command(label="Refresh Programms", command=self.__getAPIData)
         filemenu.add_command(label="Options", command=self.__setOptions)
         menubar.add_cascade(label="Options", menu=filemenu)
 
@@ -166,6 +167,14 @@ class Interface:
         label = tk.Label(master=self.mainframe, text=text)
         label.grid(column=posX, row=posY)
 
+    def __getAPIData(self):
+        request = requests.get(f"{self.config.get('network', 'api_address')}/data/options")
+        data = request.json()
+        OptionList = data["programms"]
+        self.product = tk.StringVar(self.mainframe)
+        self.option = tk.OptionMenu(self.mainframe, self.product, *OptionList)
+        self.option.grid(row=0, column=1)
+
     def __createForms(self) -> None:
         tk.Label(self.mainframe, text="Program:").grid(row=0, column=0)
         tk.Label(self.mainframe, text="Parts to manufacture:").grid(row=1, column=0)
@@ -175,11 +184,11 @@ class Interface:
         self.numManu.insert("end", 1)
         self.numManu.grid(row=1, column=1)
 
-        OptionList = os.listdir(os.getcwd() + os.path.normpath("/data/"))
+        self.__getAPIData()
 
-        self.product = tk.StringVar(self.mainframe)
-        option = tk.OptionMenu(self.mainframe, self.product, *OptionList)
-        option.grid(row=0, column=1)
+        # self.product = tk.StringVar(self.mainframe)
+        # option = tk.OptionMenu(self.mainframe, self.product, *self.OptionList)
+        # self.option.grid(row=0, column=1)
 
         self.date1 = self.__createButton(
             5, 0, "Select", function=lambda: self.__showCal("start", 5, 1)
@@ -463,9 +472,10 @@ class Interface:
         """request = requests.get(
             f"{self.config.get('network', 'api_address')}/predict/order/?startdate={startDate}&enddate={endDate}"
         )"""
-        request = requests.get(f"{self.config.get('network', 'api_address')}/")
+        request = requests.get(f"{self.config.get('network', 'api_address')}/data/options")
         controller = Controller(self.mainframe)
         controller.error(request.status_code)
+        print(request.json())
 
     def __startThread(self, target: FunctionType):
         threading.Thread(target=target).start()
