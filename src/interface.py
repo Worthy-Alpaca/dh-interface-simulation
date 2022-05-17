@@ -171,9 +171,12 @@ class Interface:
         label.grid(column=posX, row=posY)
 
     def __getAPIData(self):
-        request = requests.get(f"{self.config.get('network', 'api_address')}/data/options")
-        data = request.json()
-        OptionList = data["programms"]
+        try:
+            request = requests.get(f"{self.config.get('network', 'api_address')}/data/options")
+            data = request.json()
+            OptionList = data["programms"]
+        except Exception as e:
+            OptionList = ["API", "CONNECTION", "FAILED"]
         self.product = tk.StringVar(self.mainframe)
         self.option = tk.OptionMenu(self.mainframe, self.product, *OptionList)
         self.option.grid(row=0, column=1)
@@ -489,6 +492,7 @@ class Interface:
         product = self.product.get()
         controller = Controller(self.mainframe)
         controller.wait()
+        request = requests.get()
         for i in self.machines:
             machine = self.machines[i]
             product_id = self.product.get()
