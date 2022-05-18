@@ -76,9 +76,6 @@ class Interface:
         self.__createForms()
         self.__loadConfig()
 
-        """ Create error handling capabilities """
-        self.errors = ErrorHandler(self.mainframe)
-
     def __configInit(self) -> (list[str] | None):
         path = os.getcwd() + os.path.normpath("/data/settings/settings.ini")
         if exists(path):
@@ -176,6 +173,8 @@ class Interface:
             data = request.json()
             OptionList = data["programms"]
         except Exception as e:
+            controller = Controller(self.mainframe)
+            controller.error("Connection to the API could not be established!")
             OptionList = ["API", "CONNECTION", "FAILED"]
         self.product = tk.StringVar(self.mainframe)
         self.option = tk.OptionMenu(self.mainframe, self.product, *OptionList)
@@ -475,9 +474,6 @@ class Interface:
         # startDate = str(self.calDate["start"])
         # endDate = str(self.calDate["end"])
 
-        """request = requests.get(
-            f"{self.config.get('network', 'api_address')}/predict/order/?startdate={startDate}&enddate={endDate}"
-        )"""
         request = requests.get(f"{self.config.get('network', 'api_address')}/data/options")
         controller = Controller(self.mainframe)
         controller.error(request.status_code)
@@ -489,20 +485,34 @@ class Interface:
     def __simulate(self) -> None:
         machineTime = {}
         coords = {}
-        product = self.product.get()
+        product_id = self.product.get()
         controller = Controller(self.mainframe)
         controller.wait()
-        request = requests.get()
+        randomInterrupt = (
+            (0, 0)
+            if self.randomInterupt.get() == False
+            else (
+                self.config.getint("default", "randominterruptmin"),
+                self.config.getint("default", "randominterruptmax"),
+            )
+        )
+        # return
         for i in self.machines:
-            machine = self.machines[i]
-            product_id = self.product.get()
+            machine: Machine = self.machines[i]
             data = machine.getData()
             type = "manufacturing"
             if self.machines[i].SMD == False:
                 type = "coating"
+
+            try:
+                request = requests.get(
+                    f"{self.config.get('network', 'api_address')}/simulate/setup/?productId={product_id}&machine={machine.machineName}&randomInterMin={randomInterrupt[0]}&randomInterMax={randomInterrupt[1]}"
+                )
+            except Exception as e:
+                return controller.error(e)
             try:
                 request = requests.put(
-                    f"{self.config.get('network', 'api_address')}/simulate/{type}/{product_id}",
+                    f"{self.config.get('network', 'api_address')}/simulate/{type}/?productId={product_id}",
                     data=json.dumps(data),
                 )
             except Exception as e:
@@ -517,15 +527,6 @@ class Interface:
                     "X": requestData["plot_x"],
                     "Y": requestData["plot_y"],
                 }
-
-        randomInterrupt = (
-            (0, 0)
-            if self.randomInterupt.get() == False
-            else (
-                self.config.getint("default", "randominterruptmin"),
-                self.config.getint("default", "randominterruptmax"),
-            )
-        )
 
         controller(
             coords=coords,
