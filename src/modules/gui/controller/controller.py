@@ -4,13 +4,13 @@ import sys
 import tkinter as tk
 
 try:
-    from src.modules.gui.parent.canvas import Canvas
+    from src.modules.gui.parent.canvas import MyCanvas
 except:
-    from modules.gui.parent.canvas import Canvas
+    from modules.gui.parent.canvas import MyCanvas
 from matplotlib.pyplot import style
 
 
-class Controller(Canvas):
+class Controller(MyCanvas):
     """Draws PCB on canvas"""
 
     def __init__(self, frame: tk.Tk) -> None:
@@ -19,7 +19,8 @@ class Controller(Canvas):
     def __call__(
         self,
         coords: dict,
-        time: dict,
+        mTime: dict,
+        sTime: dict,
         numParts: int,
         randomInterupt: tuple = (0, 0),
         prodName: str = "",
@@ -27,7 +28,8 @@ class Controller(Canvas):
         self.figure.clear()
         plot = self.figure.add_subplot(121)
         ax = self.figure.add_subplot(122)
-        runtime = sum(list(time.values()))
+        runtime = sum(list(mTime.values()))
+        #setupTime = sum(list(sTime.values()))
         ax.axis("off")
         sumtime = []
         for i in range(numParts):
@@ -45,8 +47,8 @@ class Controller(Canvas):
             )
         )
         substr = ""
-        for key in time:
-            substr = substr + f"\n{key} Ideal: {round(time[key], 2)} Seconds"
+        for key in mTime:
+            substr = substr + f"\n{key} Ideal: {round(mTime[key], 2)} Seconds \n{key} Setup Time: {round(sTime[key], 2)} Seconds\n"
         textstr = textstr + substr
         props = dict(boxstyle="round", alpha=0.5)
 
