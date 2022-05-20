@@ -18,14 +18,14 @@ SCRIPT_DIR = os.path.dirname(
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 try:
     from src.modules.gui.parent.canvas import MyCanvas
-    from src.modules.gui.misc.errorhandler import ErrorHandler
     from src.modules.gui.controller.controller import Controller
     from src.modules.gui.backend.machine import Machine
+    from src.modules.gui.backend.network import NetworkRequests
 except:
     from modules.gui.parent.canvas import MyCanvas
-    from modules.gui.misc.errorhandler import ErrorHandler
     from modules.gui.controller.controller import Controller
     from modules.gui.backend.machine import Machine
+    from modules.gui.backend.network import NetworkRequests
 from tkinter import Grid, filedialog, PhotoImage, ttk, messagebox
 from tkcalendar import Calendar
 
@@ -36,10 +36,17 @@ class Interface:
     def __init__(self) -> None:
         self.mainframe = tk.Tk()
         self.mainframe.protocol("WM_DELETE_WINDOW", self.__onClose)
+
         self.mainframe.title("SMD Produktion")
-        #self.mainframe.geometry("1200x750")
+        # self.mainframe.geometry("1200x750")
         self.mainframe.minsize(width=900, height=570)
-        
+
+        # bind keyboard controlls
+        self.mainframe.bind("<Control-x>", self.__onClose)
+        self.mainframe.bind("<Control-F1>", self.__getAPIData)
+        self.mainframe.bind("<F1>", self.__startSimulation)
+        self.mainframe.bind("<F2>", self.__startCompare)
+
         # configuring rows
         Grid.rowconfigure(self.mainframe, 0, weight=1)
         Grid.rowconfigure(self.mainframe, 1, weight=1)
@@ -55,13 +62,12 @@ class Interface:
         Grid.columnconfigure(self.mainframe, 6, weight=1)
         Grid.columnconfigure(self.mainframe, 7, weight=1)
 
-
         photo = PhotoImage(file=os.getcwd() + os.path.normpath("/src/assets/logo.png"))
         self.mainframe.iconphoto(True, photo)
         self.calDate = {}
         self.machines = {}
-        self.dateLabel1 = tk.Label(self.mainframe).grid(row=1, column=3, sticky='nsew')
-        self.dateLabel2 = tk.Label(self.mainframe).grid(row=1, column=5, sticky='nsew')
+        self.dateLabel1 = tk.Label(self.mainframe).grid(row=1, column=3, sticky="nsew")
+        self.dateLabel2 = tk.Label(self.mainframe).grid(row=1, column=5, sticky="nsew")
         self.config = configparser.ConfigParser()
         self.__configInit()
 
@@ -72,29 +78,31 @@ class Interface:
             "Load": self.__openNew,
             "Save": self.__saveAs,
             "seperator": "",
-            "Exit": self.__onClose,
+            "Exit Strg+x": self.__onClose,
         }
         setupMenu = {
             "Add Machine": self.__setupMachines,
             "View Machines": self.__viewMachines,
-            "Dummy": self.__dummy
+            "Dummy": self.__dummy,
         }
         self.__createMenu(menubar, "File", fileMenu)
         self.__createMenu(menubar, "Setup", setupMenu)
         self.__createOptionsMenu(menubar)
         self.mainframe.config(menu=menubar)
-        #Canvas(self.mainframe)
+        # Canvas(self.mainframe)
         frame = tk.Frame(self.mainframe)
-        frame.grid(row=3, column=0, sticky='nsew')
+        frame.grid(row=3, column=0, sticky="nsew")
         MyCanvas(self.mainframe)
         self.__createButton(
-            8, 0, text="Compare", function=lambda: self.__startThread(self.__compare), margin=50
+            8, 0, text="Compare F2", function=self.__startCompare, margin=50
         )
-        self.__createButton(
-            2, 0, text="Simulate", function=lambda: self.__startThread(self.__simulate)
+        self.__createButton(2, 0, text="Simulate F1", function=self.__startSimulation)
+        self.__loadConfig()
+        self.requests = NetworkRequests(
+            networkAddress=self.config.get("network", "api_address"),
+            basePath=self.config.get("network", "base_path"),
         )
         self.__createForms()
-        self.__loadConfig()
 
     def __configInit(self) -> (list[str] | None):
         path = os.getcwd() + os.path.normpath("/data/settings/settings.ini")
@@ -108,11 +116,12 @@ class Interface:
         self.config.set("default", "randomInterrupt", "false")
         self.config.add_section("network")
         self.config.set("network", "api_address", "http://127.0.0.1:5000")
+        self.config.set("network", "base_path", "/api/v1/")
 
     def __call__(self, *args: any, **kwds: any) -> None:
         self.mainframe.mainloop()
 
-    def __onClose(self) -> None:
+    def __onClose(self, *args: any, **kwargs: any) -> None:
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
             with open(
                 os.getcwd() + os.path.normpath("/data/settings/settings.ini"), "w"
@@ -122,16 +131,16 @@ class Interface:
 
     def __dummy(self, text="") -> None:
         top = tk.Toplevel(self.mainframe)
-        top.geometry('500x500')
+        top.geometry("500x500")
         Grid.rowconfigure(top, 0, weight=1)
-        
+
         Grid.columnconfigure(top, 0, weight=1)
-        
+
         Grid.rowconfigure(top, 1, weight=1)
-        button_1 = Button(top, text='Button 1')
-        button_2 = Button(top, text='Button 2')
-        button_1.grid(row=0, column=0, sticky='nsew')
-        button_2.grid(row=1, column=0, sticky='nsew')
+        button_1 = Button(top, text="Button 1")
+        button_2 = Button(top, text="Button 2")
+        button_1.grid(row=0, column=0, sticky="nsew")
+        button_2.grid(row=1, column=0, sticky="nsew")
 
     def __loadConfig(self) -> None:
         data = self.__openNew()
@@ -173,7 +182,9 @@ class Interface:
             ),
         )
         filemenu.add_separator()
-        filemenu.add_command(label="Refresh Programms", command=self.__getAPIData)
+        filemenu.add_command(
+            label="Refresh Programms Strg+F1", command=self.__getAPIData
+        )
         filemenu.add_separator()
         filemenu.add_command(label="Options", command=self.__setOptions)
         menubar.add_cascade(label="Options", menu=filemenu)
@@ -189,35 +200,40 @@ class Interface:
         """Create a button at specified position"""
         if margin == None:
             margin = 30
-        button = tk.Button(master=self.mainframe, height=1, width=10, text=text, command=function)
-        button.grid(column=posX, row=posY, padx=(margin, 0), sticky='nsew')
+        button = tk.Button(
+            master=self.mainframe, height=1, width=10, text=text, command=function
+        )
+        button.grid(column=posX, row=posY, padx=(margin, 0), sticky="nsew")
 
     def __createLabel(self, posX: int, posY: int, text: str) -> tk.Label:
         """Create a label at specified position"""
         label = tk.Label(master=self.mainframe, text=text)
-        label.grid(column=posX, row=posY, sticky='nsew')
+        label.grid(column=posX, row=posY, sticky="nsew")
 
-    def __getAPIData(self):
-        try:
-            request = requests.get(f"{self.config.get('network', 'api_address')}/data/options")
-            data = request.json()
-            OptionList = data["programms"]
-        except Exception as e:
+    def __getAPIData(self, *args: any, **kwargs: any):
+        request = self.requests.get("/data/options/")
+        if type(request) == tuple:
             controller = Controller(self.mainframe)
             controller.error("Connection to the API could not be established!")
             OptionList = ["API", "CONNECTION", "FAILED"]
+        else:
+            OptionList = request["programms"]
         self.product = tk.StringVar(self.mainframe)
         self.option = tk.OptionMenu(self.mainframe, self.product, *OptionList)
-        self.option.grid(row=0, column=1, sticky='nsew')
+        self.option.grid(row=0, column=1, sticky="nsew")
 
     def __createForms(self) -> None:
-        tk.Label(self.mainframe, text="Program:").grid(row=0, column=0, sticky='nsew')
-        tk.Label(self.mainframe, text="Parts to manufacture:").grid(row=1, column=0, sticky='nsew')
-        tk.Label(self.mainframe, text="Start Date:").grid(row=0, column=4, sticky='nsew')
-        tk.Label(self.mainframe, text="End Date:").grid(row=0, column=6, sticky='nsew')
+        tk.Label(self.mainframe, text="Program:").grid(row=0, column=0, sticky="nsew")
+        tk.Label(self.mainframe, text="Parts to manufacture:").grid(
+            row=1, column=0, sticky="nsew"
+        )
+        tk.Label(self.mainframe, text="Start Date:").grid(
+            row=0, column=4, sticky="nsew"
+        )
+        tk.Label(self.mainframe, text="End Date:").grid(row=0, column=6, sticky="nsew")
         self.numManu = tk.Entry(self.mainframe)
         self.numManu.insert("end", 1)
-        self.numManu.grid(row=1, column=1, sticky='nsew')
+        self.numManu.grid(row=1, column=1, sticky="nsew")
 
         self.__getAPIData()
 
@@ -353,12 +369,14 @@ class Interface:
                         {"ST-RR": [feedercart_4x.get(), feedercart_4y.get()]},
                     ],
                 }
-                self.machines[name] = Machine(name, cph, noz, smdMachine.get(), offsets=args)
+                self.machines[name] = Machine(
+                    name, cph, noz, smdMachine.get(), offsets=args
+                )
                 close()
             except Exception as e:
-                tk.Label(top, text="Please only use Numbers for CPH and Nozzle Heads").grid(
-                    row=51, column=1
-                )
+                tk.Label(
+                    top, text="Please only use Numbers for CPH and Nozzle Heads"
+                ).grid(row=51, column=1)
 
         def load():
             self.machines.clear()
@@ -504,13 +522,18 @@ class Interface:
         # startDate = str(self.calDate["start"])
         # endDate = str(self.calDate["end"])
 
-        request = requests.get(f"{self.config.get('network', 'api_address')}/data/options")
+        request = requests.get(
+            f"{self.config.get('network', 'api_address')}/data/options"
+        )
         controller = Controller(self.mainframe)
         controller.error(request.status_code)
         print(request.json())
 
-    def __startThread(self, target: FunctionType):
-        threading.Thread(target=target).start()
+    def __startSimulation(self, *args: any, **kwargs: any):
+        threading.Thread(target=self.__simulate).start()
+
+    def __startCompare(self, *args: any, **kwargs: any):
+        threading.Thread(target=self.__compare).start()
 
     def __simulate(self) -> None:
         machineTime = {}
@@ -535,18 +558,24 @@ class Interface:
             if self.machines[i].SMD == False:
                 type = "coating"
 
-            request = requests.get(
-                f"{self.config.get('network', 'api_address')}/simulate/setup/?productId={product_id}&machine={machine.machineName}&randomInterMin={randomInterrupt[0]}&randomInterMax={randomInterrupt[1]}"
-            )
-            requestData = request.json()
-            setupTime[machine.machineName] = requestData['time']
-            try:
-                request = requests.put(
-                    f"{self.config.get('network', 'api_address')}/simulate/{type}/?productId={product_id}",
-                    data=json.dumps(data),
-                )
-            except Exception as e:
-                return controller.error(e)
+            params = {
+                "productId": product_id,
+                "machine": machine.machineName,
+                "randomInterMin": randomInterrupt[0],
+                "randomInterMax": randomInterrupt[1],
+            }
+            requestData = self.requests.get("/simulate/setup/", params)
+
+            if type(requestData) == tuple:
+                return controller.error(requestData[1])
+
+            setupTime[machine.machineName] = requestData["time"]
+
+            request = self.requests.put(f"/simulate/{type}/", params, data)
+
+            if type(request) == tuple:
+                return controller.error(request[1])
+
             if request.status_code != 200:
                 error = f"{request.status_code} - {request.reason} "
                 return controller.error(error)
@@ -561,7 +590,7 @@ class Interface:
         controller(
             coords=coords,
             mTime=machineTime,
-            sTime = setupTime,
+            sTime=setupTime,
             numParts=int(self.numManu.get()),
             randomInterupt=randomInterrupt,
             prodName=product_id,
