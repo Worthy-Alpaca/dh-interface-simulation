@@ -3,7 +3,7 @@ import tkinter as tk
 from types import FunctionType
 import configparser
 from os.path import exists
-from numpy import product
+import time as tm
 import requests
 import threading
 from tkinter import *
@@ -43,7 +43,7 @@ class Interface:
 
         # bind keyboard controlls
         self.mainframe.bind("<Control-x>", self.__onClose)
-        self.mainframe.bind("<Control-F1>", self.__getAPIData)
+        # self.mainframe.bind("<Control-F1>", self.__getAPIData)
         self.mainframe.bind("<F1>", self.__startSimulation)
         self.mainframe.bind("<F2>", self.__startCompare)
 
@@ -66,6 +66,7 @@ class Interface:
         self.mainframe.iconphoto(True, photo)
         self.calDate = {}
         self.machines = {}
+        self.OptionList = []
         self.dateLabel1 = tk.Label(self.mainframe).grid(row=1, column=3, sticky="nsew")
         self.dateLabel2 = tk.Label(self.mainframe).grid(row=1, column=5, sticky="nsew")
         self.config = configparser.ConfigParser()
@@ -128,7 +129,7 @@ class Interface:
                 self.config.write(configfile)
             self.mainframe.destroy()
 
-    def __startThread(self, function: FunctionType):
+    def __startThread(self, function: FunctionType, *args):
         threading.Thread(target=function).start()
 
     def __dummy(self, text="") -> None:
@@ -183,11 +184,11 @@ class Interface:
                 "default", "randomInterrupt", str(self.randomInterupt.get())
             ),
         )
-        filemenu.add_separator()
-        filemenu.add_command(
+        # filemenu.add_separator()
+        """filemenu.add_command(
             label="Refresh Programms Strg+F1",
             command=lambda: self.__startThread(self.__getAPIData),
-        )
+        )"""
         filemenu.add_separator()
         filemenu.add_command(label="Options", command=self.__setOptions)
         menubar.add_cascade(label="Options", menu=filemenu)
@@ -217,17 +218,21 @@ class Interface:
         label = tk.Label(master=self.mainframe, text=text)
         label.grid(column=posX, row=posY, sticky="nsew")
 
-    def __getAPIData(self, *args: any, **kwargs: any):
+    def __runAPICheck(self, *args):
         request = self.requests.get("/data/options/")
         if type(request) == tuple:
             controller = Controller(self.mainframe)
             controller.error("Connection to the API could not be established!")
-            OptionList = ["API", "CONNECTION", "FAILED"]
+            self.OptionList = ["API", "CONNECTION", "FAILED"]
         else:
-            OptionList = request["programms"]
-        self.product = tk.StringVar(self.mainframe)
-        self.option = tk.OptionMenu(self.mainframe, self.product, *OptionList)
-        self.option.grid(row=0, column=1, sticky="nsew")
+            self.OptionList = request["programms"]
+
+        menu = self.option["menu"]
+        menu.delete(0, "end")
+        for string in self.OptionList:
+            menu.add_command(
+                label=string, command=lambda value=string: self.product.set(value)
+            )
 
     def __createForms(self) -> None:
         tk.Label(self.mainframe, text="Program:").grid(row=0, column=0, sticky="nsew")
@@ -241,12 +246,11 @@ class Interface:
         self.numManu = tk.Entry(self.mainframe)
         self.numManu.insert("end", 1)
         self.numManu.grid(row=1, column=1, sticky="nsew")
-
-        self.__getAPIData()
-
-        # self.product = tk.StringVar(self.mainframe)
-        # option = tk.OptionMenu(self.mainframe, self.product, *self.OptionList)
-        # self.option.grid(row=0, column=1)
+        self.product = tk.StringVar(self.mainframe)
+        self.product.set("")
+        self.option = tk.OptionMenu(self.mainframe, self.product, "", *self.OptionList)
+        self.option.grid(row=0, column=1, sticky="nsew")
+        self.option.bind("<Enter>", self.__runAPICheck)
 
         self.date1 = self.__createButton(
             5, 0, "Select", function=lambda: self.__showCal("start", 5, 1)
@@ -284,6 +288,7 @@ class Interface:
         nozHeads = tk.Entry(top)
         nozHeads.insert("end", "1")
         nozHeads.grid(row=2, column=1)
+
         self.button_pressed = tk.StringVar()
         smdMachine = tk.BooleanVar()
         smdMachine.set(False)
@@ -309,8 +314,16 @@ class Interface:
         pcbY.insert("end", "0")
         pcbY.grid(row=6, column=2)
 
+        tk.Label(top, text="Tool Pickup:").grid(row=7, column=0)
+        toolX = tk.Entry(top)
+        toolX.insert("end", "0")
+        toolX.grid(row=7, column=1)
+        toolY = tk.Entry(top)
+        toolY.insert("end", "0")
+        toolY.grid(row=7, column=2)
+
         """ feedercart 1"""
-        row1 = 7
+        row1 = 8
         tk.Label(top, text="Feedercart Front Left:").grid(row=row1, column=0)
         feedercart_1x = tk.Entry(top)
         feedercart_1x.insert("end", "0")
@@ -319,7 +332,7 @@ class Interface:
         feedercart_1y.insert("end", "0")
         feedercart_1y.grid(row=row1, column=2)
         """ feedercart 2"""
-        row2 = 8
+        row2 = 9
         tk.Label(top, text="Feedercart Back Left:").grid(row=row2, column=0)
         feedercart_2x = tk.Entry(top)
         feedercart_2x.insert("end", "0")
@@ -328,7 +341,7 @@ class Interface:
         feedercart_2y.insert("end", "0")
         feedercart_2y.grid(row=row2, column=2)
         """ feedercart 3"""
-        row3 = 9
+        row3 = 10
         tk.Label(top, text="Feedercart Front Right:").grid(row=row3, column=0)
         feedercart_3x = tk.Entry(top)
         feedercart_3x.insert("end", "0")
@@ -337,7 +350,7 @@ class Interface:
         feedercart_3y.insert("end", "0")
         feedercart_3y.grid(row=row3, column=2)
         """ feedercart 4"""
-        row4 = 10
+        row4 = 11
         tk.Label(top, text="Feedercart Back Right:").grid(row=row4, column=0)
         feedercart_4x = tk.Entry(top)
         feedercart_4x.insert("end", "0")
@@ -369,6 +382,7 @@ class Interface:
                 args = {
                     "checkpoint": [int(checkpointX.get()), int(checkpointY.get())],
                     "pcb": [int(pcbX.get()), int(pcbY.get())],
+                    "tools": [int(toolX.get()), int(toolY.get())],
                     "feedercarts": [
                         {"ST-FL": [int(feedercart_1x.get()), int(feedercart_1y.get())]},
                         {"ST-RL": [int(feedercart_2x.get()), int(feedercart_2y.get())]},
