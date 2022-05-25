@@ -93,16 +93,15 @@ class Interface:
         frame = tk.Frame(self.mainframe)
         frame.grid(row=3, column=0, sticky="nsew")
         MyCanvas(self.mainframe)
-        self.__createButton(
-            8, 0, text="Compare F2", function=self.__startCompare, margin=50
-        )
-        self.__createButton(2, 0, text="Simulate F1", function=self.__startSimulation)
-        self.__loadConfig()
+        self.__createButton(8, 0, text="Compare F2", function=self.__compare, margin=50)
+        self.__createButton(2, 0, text="Simulate F1", function=self.__simulate)
+
         self.requests = NetworkRequests(
             networkAddress=self.config.get("network", "api_address"),
             basePath=self.config.get("network", "base_path"),
         )
         self.__createForms()
+        self.__loadConfig()
 
     def __configInit(self) -> (list[str] | None):
         path = os.getcwd() + os.path.normpath("/data/settings/settings.ini")
@@ -112,7 +111,7 @@ class Interface:
         self.config.add_section("default")
         self.config.set("default", "randomInterruptMax", "0")
         self.config.set("default", "randomInterruptMin", "0")
-        self.config.set("default", "multithreading", "false")
+        self.config.set("default", "useIdealState", "false")
         self.config.set("default", "randomInterrupt", "false")
         self.config.add_section("network")
         self.config.set("network", "api_address", "http://127.0.0.1:5000")
@@ -128,6 +127,9 @@ class Interface:
             ) as configfile:
                 self.config.write(configfile)
             self.mainframe.destroy()
+
+    def __startThread(self, function: FunctionType):
+        threading.Thread(target=function).start()
 
     def __dummy(self, text="") -> None:
         top = tk.Toplevel(self.mainframe)
@@ -163,13 +165,13 @@ class Interface:
 
     def __createOptionsMenu(self, menubar: tk.Menu) -> tk.Menu:
         filemenu = tk.Menu(menubar, tearoff=0)
-        self.multithread = tk.BooleanVar()
-        self.multithread.set(self.config.getboolean("default", "multithreading"))
+        self.useIdealState = tk.BooleanVar()
+        self.useIdealState.set(self.config.getboolean("default", "useIdealState"))
         filemenu.add_checkbutton(
-            label="Use Multithreading",
-            var=self.multithread,
+            label="Use ideal Simulation Time",
+            var=self.useIdealState,
             command=lambda: self.config.set(
-                "default", "multithreading", str(self.multithread.get())
+                "default", "useIdealState", str(self.useIdealState.get())
             ),
         )
         self.randomInterupt = tk.BooleanVar()
@@ -183,7 +185,8 @@ class Interface:
         )
         filemenu.add_separator()
         filemenu.add_command(
-            label="Refresh Programms Strg+F1", command=self.__getAPIData
+            label="Refresh Programms Strg+F1",
+            command=lambda: self.__startThread(self.__getAPIData),
         )
         filemenu.add_separator()
         filemenu.add_command(label="Options", command=self.__setOptions)
@@ -201,7 +204,11 @@ class Interface:
         if margin == None:
             margin = 30
         button = tk.Button(
-            master=self.mainframe, height=1, width=10, text=text, command=function
+            master=self.mainframe,
+            height=1,
+            width=10,
+            text=text,
+            command=lambda: self.__startThread(function),
         )
         button.grid(column=posX, row=posY, padx=(margin, 0), sticky="nsew")
 
@@ -551,18 +558,23 @@ class Interface:
             )
         )
         # return
+        if len(self.machines) == 0:
+            return controller.error(
+                "Please load or create a machine configuration first!"
+            )
         for i in self.machines:
             machine: Machine = self.machines[i]
             data = machine.getData()
-            type = "manufacturing"
+            manufacturingType = "manufacturing"
             if self.machines[i].SMD == False:
-                type = "coating"
+                manufacturingType = "coating"
 
             params = {
                 "productId": product_id,
                 "machine": machine.machineName,
                 "randomInterMin": randomInterrupt[0],
                 "randomInterMax": randomInterrupt[1],
+                "useIdealState": self.useIdealState.get(),
             }
             requestData = self.requests.get("/simulate/setup/", params)
 
@@ -571,7 +583,7 @@ class Interface:
 
             setupTime[machine.machineName] = requestData["time"]
 
-            request = self.requests.put(f"/simulate/{type}/", params, data)
+            request = self.requests.put(f"/simulate/{manufacturingType}/", params, data)
 
             if type(request) == tuple:
                 return controller.error(request[1])
