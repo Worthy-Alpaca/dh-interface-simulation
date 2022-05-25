@@ -29,11 +29,13 @@ class Controller(MyCanvas):
         plot = self.figure.add_subplot(121)
         ax = self.figure.add_subplot(122)
         runtime = sum(list(mTime.values()))
-        #setupTime = sum(list(sTime.values()))
+        # setupTime = sum(list(sTime.values()))
         ax.axis("off")
         sumtime = []
         for i in range(numParts):
-            sumtime.append(runtime + random.randint(randomInterupt[0], randomInterupt[1]))
+            sumtime.append(
+                runtime + random.randint(randomInterupt[0], randomInterupt[1])
+            )
 
         textstr = "\n".join(
             (
@@ -48,7 +50,10 @@ class Controller(MyCanvas):
         )
         substr = ""
         for key in mTime:
-            substr = substr + f"\n{key} Ideal: {round(mTime[key], 2)} Seconds \n{key} Setup Time: {round(sTime[key], 2)} Seconds\n"
+            substr = (
+                substr
+                + f"\n{key} Ideal: {round(mTime[key], 2)} Seconds \n{key} Setup Time: {round(sTime[key], 2)} Seconds\n"
+            )
         textstr = textstr + substr
         props = dict(boxstyle="round", alpha=0.5)
 
@@ -59,7 +64,7 @@ class Controller(MyCanvas):
             transform=ax.transAxes,
             fontsize=14,
             verticalalignment="top",
-            bbox=props,
+            wrap=True,
         )
         for key in coords:
             plot.scatter(coords[key]["X"], coords[key]["Y"])
@@ -68,18 +73,38 @@ class Controller(MyCanvas):
 
     def wait(self) -> any:
         self.figure.clear()
-        waitPlot = self.figure.add_subplot(312)
+        waitPlot = self.figure.add_subplot(111)
 
         style.use("ggplot")
         waitPlot.axis("off")
-        waitPlot.set_title("Loading...", color="green")
+        # waitPlot.set_title("Loading...", color="green")
+        waitPlot.text(
+            0.5,
+            0.5,
+            "Loading...",
+            fontsize=14,
+            verticalalignment="center",
+            horizontalalignment="center",
+            color="green",
+            wrap=True,
+        )
         self.canvas.draw()
 
     def error(self, error) -> any:
         self.figure.clear()
-        waitPlot = self.figure.add_subplot(312)
+        errorPlot = self.figure.add_subplot(111)
 
         style.use("ggplot")
-        waitPlot.axis("off")
-        waitPlot.set_title(f"An error occured: {error} ", color="red")
+        errorPlot.axis("off")
+        # errorPlot.set_title(f"An error occured: {error} ", color="red")
+        errorPlot.text(
+            0.5,
+            0.5,
+            error,
+            fontsize=14,
+            verticalalignment="center",
+            horizontalalignment="center",
+            color="red",
+            wrap=True,
+        )
         self.canvas.draw()
