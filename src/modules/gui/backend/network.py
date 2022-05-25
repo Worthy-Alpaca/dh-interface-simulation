@@ -25,7 +25,7 @@ class NetworkRequests:
 
         try:
             request = requests.put(
-                self.networkAddress + endpoint + queryParams, data=json.dump(data)
+                self.networkAddress + endpoint + queryParams, data=json.dumps(data)
             )
         except Exception as e:
             return (False, e)
