@@ -94,7 +94,7 @@ class Interface:
         frame = tk.Frame(self.mainframe)
         frame.grid(row=3, column=0, sticky="nsew")
         MyCanvas(self.mainframe)
-        self.__createButton(8, 0, text="Compare F2", function=self.__compare, margin=50)
+        self.__createButton(8, 0, text="Compare F2", function=self.__dummy, margin=50)
         self.__createButton(2, 0, text="Simulate F1", function=self.__simulate)
 
         self.requests = NetworkRequests(
