@@ -123,6 +123,8 @@ class Interface:
 
     def __onClose(self, *args: any, **kwargs: any) -> None:
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
+            if not exists(os.getcwd() + os.path.normpath("/data/settings")):
+                os.mkdir(os.getcwd() + os.path.normpath("/data/settings"))
             with open(
                 os.getcwd() + os.path.normpath("/data/settings/settings.ini"), "w"
             ) as configfile:
