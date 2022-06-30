@@ -31,9 +31,8 @@ from tkcalendar import Calendar
 
 
 class Interface:
-    """Creates the interface and it's child modules"""
-
     def __init__(self) -> None:
+        """Creates the interface and it's child modules."""
         self.mainframe = tk.Tk()
         self.mainframe.protocol("WM_DELETE_WINDOW", self.__onClose)
 
@@ -72,7 +71,7 @@ class Interface:
         self.config = configparser.ConfigParser()
         self.__configInit()
 
-        """ Create interface elements"""
+        # Create interface elements
         menubar = tk.Menu(self.mainframe)
         fileMenu = {
             "New": self.__new,
@@ -104,7 +103,12 @@ class Interface:
         self.__createForms()
         self.__loadConfig()
 
-    def __configInit(self) -> (list[str] | None):
+    def __configInit(self) -> configparser.ConfigParser:
+        """Initiate the config variables.
+
+        Returns:
+            ConfigParser: Module that contains config settings.
+        """
         path = os.getcwd() + os.path.normpath("/data/settings/settings.ini")
         if exists(path):
             return self.config.read(path)
@@ -119,9 +123,11 @@ class Interface:
         self.config.set("network", "base_path", "/api/v1/")
 
     def __call__(self, *args: any, **kwds: any) -> None:
+        """Call this to initate the window."""
         self.mainframe.mainloop()
 
     def __onClose(self, *args: any, **kwargs: any) -> None:
+        """Closing Operation. Saves config variables to file."""
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
             if not exists(os.getcwd() + os.path.normpath("/data/settings")):
                 os.mkdir(os.getcwd() + os.path.normpath("/data/settings"))
@@ -132,9 +138,19 @@ class Interface:
             self.mainframe.destroy()
 
     def __startThread(self, function: FunctionType, *args):
+        """Start a new thread with a given function.
+
+        Args:
+            function (FunctionType): The current function.
+        """
         threading.Thread(target=function).start()
 
     def __dummy(self, text="") -> None:
+        """Dummy function. Used for testing.
+
+        Args:
+            text (str, optional): Optional Textstring. Defaults to "".
+        """
         top = tk.Toplevel(self.mainframe)
         top.geometry("500x500")
         Grid.rowconfigure(top, 0, weight=1)
@@ -148,6 +164,7 @@ class Interface:
         button_2.grid(row=1, column=0, sticky="nsew")
 
     def __loadConfig(self) -> None:
+        """Load a machine config from `.json` file."""
         data = self.__openNew()
         if data == None:
             return
@@ -158,6 +175,13 @@ class Interface:
         self.__viewMachines()
 
     def __createMenu(self, menubar: tk.Menu, label: str, data: dict) -> None:
+        """Create a menu in the menubar.
+
+        Args:
+            menubar (tk.Menu): The current MenuBar instance.
+            label (str): The Label of the menu.
+            data (dict): Options in the menu.
+        """
         filemenu = tk.Menu(menubar, tearoff=0)
         for key in data:
             if key == "seperator":
@@ -167,6 +191,14 @@ class Interface:
         menubar.add_cascade(label=label, menu=filemenu)
 
     def __createOptionsMenu(self, menubar: tk.Menu) -> tk.Menu:
+        """Creates the Options Menu.
+
+        Args:
+            menubar (tk.Menu): The current MenuBar instance.
+
+        Returns:
+            tk.Menu: The created menu.
+        """
         filemenu = tk.Menu(menubar, tearoff=0)
         self.useIdealState = tk.BooleanVar()
         self.useIdealState.set(self.config.getboolean("default", "useIdealState"))
@@ -186,11 +218,6 @@ class Interface:
                 "default", "randomInterrupt", str(self.randomInterupt.get())
             ),
         )
-        # filemenu.add_separator()
-        """filemenu.add_command(
-            label="Refresh Programms Strg+F1",
-            command=lambda: self.__startThread(self.__getAPIData),
-        )"""
         filemenu.add_separator()
         filemenu.add_command(label="Options", command=self.__setOptions)
         menubar.add_cascade(label="Options", menu=filemenu)
@@ -203,7 +230,18 @@ class Interface:
         function: FunctionType,
         margin: int = None,
     ) -> tk.Button:
-        """Create a button at specified position"""
+        """Creates a Button at the given position.
+
+        Args:
+            posX (int): The X Grid Position.
+            posY (int): The Y Grid Position.
+            text (str): The display text.
+            function (FunctionType): The function to be called on button press.
+            margin (int, optional): Margin to next element in Grid. Defaults to None.
+
+        Returns:
+            tk.Button: The created Button.
+        """
         if margin == None:
             margin = 30
         button = tk.Button(
@@ -216,11 +254,21 @@ class Interface:
         button.grid(column=posX, row=posY, padx=(margin, 0), sticky="nsew")
 
     def __createLabel(self, posX: int, posY: int, text: str) -> tk.Label:
-        """Create a label at specified position"""
+        """Creates a Label at the given position.
+
+        Args:
+            posX (int): The X Grid Position.
+            posY (int): The Y Grid Position.
+            text (str): The display text.
+
+        Returns:
+            tk.Label: The created Label.
+        """
         label = tk.Label(master=self.mainframe, text=text)
         label.grid(column=posX, row=posY, sticky="nsew")
 
     def __runAPICheck(self, *args):
+        """Get Data all Program options from API."""
         request = self.requests.get("/data/options/")
         if type(request) == tuple:
             controller = Controller(self.mainframe)
@@ -237,6 +285,7 @@ class Interface:
             )
 
     def __createForms(self) -> None:
+        """Creates the Inputs."""
         tk.Label(self.mainframe, text="Program:").grid(row=0, column=0, sticky="nsew")
         tk.Label(self.mainframe, text="Parts to manufacture:").grid(
             row=1, column=0, sticky="nsew"
@@ -262,6 +311,16 @@ class Interface:
         )
 
     def __showCal(self, i: str, posX: int, posY: int) -> tk.Toplevel:
+        """Creates the popup Calendar.
+
+        Args:
+            i (str): Current time point.
+            posX (int): The X Grid Position
+            posY (int): The Y Grid Position
+
+        Returns:
+            tk.Toplevel: The created Calendar Toplevel
+        """
         top = tk.Toplevel(self.mainframe)
         cal = Calendar(top, font="Arial 14", selectmode="day")
 
@@ -274,6 +333,11 @@ class Interface:
         ttk.Button(top, text="ok", command=lambda: getDate(cal)).pack()
 
     def __setupMachines(self) -> tk.Toplevel:
+        """Creates the form for Machine setup.
+
+        Returns:
+            tk.Toplevel: The created Form.
+        """
         top = tk.Toplevel(self.mainframe)
         top.title("Add Machine")
         menubar = tk.Menu(top)
@@ -296,7 +360,7 @@ class Interface:
         smdMachine.set(False)
         tk.Label(top, text="SMD Machine:").grid(row=3, column=0)
 
-        """ Offset entries """
+        # Offset entries
         tk.Label(top, text="Offsets").grid(row=4, column=0)
         tk.Label(top, text="X").grid(row=4, column=1)
         tk.Label(top, text="Y").grid(row=4, column=2)
@@ -324,7 +388,7 @@ class Interface:
         toolY.insert("end", "0")
         toolY.grid(row=7, column=2)
 
-        """ feedercart 1"""
+        # feedercart 1
         row1 = 8
         tk.Label(top, text="Feedercart Front Left:").grid(row=row1, column=0)
         feedercart_1x = tk.Entry(top)
@@ -333,7 +397,7 @@ class Interface:
         feedercart_1y = tk.Entry(top)
         feedercart_1y.insert("end", "0")
         feedercart_1y.grid(row=row1, column=2)
-        """ feedercart 2"""
+        # feedercart 2
         row2 = 9
         tk.Label(top, text="Feedercart Back Left:").grid(row=row2, column=0)
         feedercart_2x = tk.Entry(top)
@@ -342,7 +406,7 @@ class Interface:
         feedercart_2y = tk.Entry(top)
         feedercart_2y.insert("end", "0")
         feedercart_2y.grid(row=row2, column=2)
-        """ feedercart 3"""
+        # feedercart 3
         row3 = 10
         tk.Label(top, text="Feedercart Front Right:").grid(row=row3, column=0)
         feedercart_3x = tk.Entry(top)
@@ -351,7 +415,7 @@ class Interface:
         feedercart_3y = tk.Entry(top)
         feedercart_3y.insert("end", "0")
         feedercart_3y.grid(row=row3, column=2)
-        """ feedercart 4"""
+        # feedercart 4
         row4 = 11
         tk.Label(top, text="Feedercart Back Right:").grid(row=row4, column=0)
         feedercart_4x = tk.Entry(top)
@@ -425,6 +489,11 @@ class Interface:
         top.config(menu=menubar)
 
     def __viewMachines(self) -> tk.Toplevel:
+        """Creates the window to view the loaded machines.
+
+        Returns:
+            tk.Toplevel: The created Window.
+        """
         top = tk.Toplevel(self.mainframe)
         top.geometry("300x200")
         top.title("Machines")
@@ -479,6 +548,11 @@ class Interface:
         ttk.Button(top, text="ok", command=close).pack()
 
     def __setOptions(self) -> tk.Toplevel:
+        """Creates window for option management.
+
+        Returns:
+            tk.Toplevel: The created window.
+        """
         top = tk.Toplevel(self.mainframe)
         top.geometry("300x150")
         top.title("Options")
@@ -516,9 +590,15 @@ class Interface:
         ttk.Button(top, text="OK", command=callback).pack()
 
     def __new(self) -> None:
+        """Clears all entries."""
         self.numManu.delete(0, "end")
 
     def __saveAs(self, data: dict) -> None:
+        """Save the privided Data to `.json`.
+
+        Args:
+            data (dict): The data to save.
+        """
         file_opt = options = {}
         options["filetypes"] = [("JSON files", ".json"), ("all files", ".*")]
         options["initialdir"] = os.getcwd() + os.path.normpath("/data/presets")
@@ -530,6 +610,12 @@ class Interface:
         json.dump(data, filename)
 
     def __openNew(self) -> (None | dict):
+        """Opens an interface for file loading.
+
+        Returns:
+            Dict: The loaded `.json` file.
+            None: If no file is selected.
+        """
         file_opt = options = {}
         options["filetypes"] = [("JSON files", ".json"), ("all files", ".*")]
         options["initialdir"] = os.getcwd() + os.path.normpath("/data/presets")
@@ -542,6 +628,7 @@ class Interface:
         return data
 
     def __compare(self) -> None:
+        """Dummy operation for now."""
         # startDate = str(self.calDate["start"])
         # endDate = str(self.calDate["end"])
 
@@ -553,12 +640,15 @@ class Interface:
         print(request.json())
 
     def __startSimulation(self, *args: any, **kwargs: any):
+        """Starts simulation in a new Thread."""
         threading.Thread(target=self.__simulate).start()
 
     def __startCompare(self, *args: any, **kwargs: any):
+        """Starts Compare function in a new Thread."""
         threading.Thread(target=self.__compare).start()
 
     def __simulate(self) -> None:
+        """Simulate the manufacturing environment."""
         machineTime = {}
         setupTime = {}
         coords = {}
