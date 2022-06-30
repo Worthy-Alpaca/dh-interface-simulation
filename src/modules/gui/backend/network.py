@@ -1,12 +1,30 @@
+from typing import Union
 import requests
 import json
 
 
 class NetworkRequests:
     def __init__(self, networkAddress: str, basePath: str) -> None:
+        """Class for API requests.
+
+        Args:
+            networkAddress (str): The network address of the API.
+            basePath (str): The base path to the API.
+        """
         self.networkAddress = networkAddress + basePath
 
-    def get(self, endpoint: str, params: dict = {}) -> (tuple[bool, Exception] | dict):
+    def get(
+        self, endpoint: str, params: dict = {}
+    ) -> Union[tuple[bool, Exception], dict]:
+        """Function for HTTP GET call.
+
+        Args:
+            endpoint (str): The current endpoint.
+            params (dict, optional): The request parameters. Defaults to {}.
+
+        Returns:
+            Union[tuple[bool, Exception], dict]: The returned data.
+        """
         queryParams = "?"
         for key in params:
             queryParams = queryParams + f"{key}={params[key]}&"
@@ -18,7 +36,19 @@ class NetworkRequests:
 
         return request.json()
 
-    def put(self, endpoint: str, params: dict, data: dict):
+    def put(
+        self, endpoint: str, params: dict, data: dict
+    ) -> Union[tuple[bool, Exception], dict]:
+        """Function for HTTP PUT call.
+
+        Args:
+            endpoint (str): The current endpoint.
+            params (dict): The request parameters.
+            data (dict): The request data.
+
+        Returns:
+            Union[tuple[bool, Exception], dict]: The returned data.
+        """
         queryParams = "?"
         for key in params:
             queryParams = queryParams + f"{key}={params[key]}&"

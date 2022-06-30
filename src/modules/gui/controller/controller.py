@@ -24,7 +24,17 @@ class Controller(MyCanvas):
         numParts: int,
         randomInterupt: tuple = (0, 0),
         prodName: str = "",
-    ) -> any:
+    ) -> None:
+        """Creates the summary with the provided data.
+
+        Args:
+            coords (dict): PCB Coordinates for plotting.
+            mTime (dict): Time from assembly calculations.
+            sTime (dict): Time from setup calculations.
+            numParts (int): Number of created PCBs.
+            randomInterupt (tuple, optional): The random interrupt values. (Min, Max). Defaults to (0, 0).
+            prodName (str, optional): The Product name. Defaults to "".
+        """
         self.figure.clear()
         plot = self.figure.add_subplot(121)
         ax = self.figure.add_subplot(122)
@@ -72,6 +82,7 @@ class Controller(MyCanvas):
         self.canvas.draw()
 
     def wait(self) -> any:
+        """Function that displays a loading screen."""
         self.figure.clear()
         waitPlot = self.figure.add_subplot(111)
 
@@ -90,7 +101,12 @@ class Controller(MyCanvas):
         )
         self.canvas.draw()
 
-    def error(self, error) -> any:
+    def error(self, error: str) -> None:
+        """Function that displays an error message.
+
+        Args:
+            error (str): The current error message.
+        """
         self.figure.clear()
         errorPlot = self.figure.add_subplot(111)
 
