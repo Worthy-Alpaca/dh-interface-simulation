@@ -1,0 +1,1481 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>src.interface API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>src.interface</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from pathlib import Path
+import tkinter as tk
+from types import FunctionType
+import configparser
+from os.path import exists
+import time as tm
+import requests
+import threading
+from tkinter import *
+import sys
+import os
+import json
+
+PACKAGE_PARENT = &#34;../&#34;
+SCRIPT_DIR = os.path.dirname(
+    os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__)))
+)
+sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
+try:
+    from src.modules.gui.parent.canvas import MyCanvas
+    from src.modules.gui.controller.controller import Controller
+    from src.modules.gui.backend.machine import Machine
+    from src.modules.gui.backend.network import NetworkRequests
+except:
+    from modules.gui.parent.canvas import MyCanvas
+    from modules.gui.controller.controller import Controller
+    from modules.gui.backend.machine import Machine
+    from modules.gui.backend.network import NetworkRequests
+from tkinter import Grid, filedialog, PhotoImage, ttk, messagebox
+from tkcalendar import Calendar
+
+
+class Interface:
+    def __init__(self) -&gt; None:
+        &#34;&#34;&#34;Creates the interface and it&#39;s child modules.&#34;&#34;&#34;
+        self.mainframe = tk.Tk()
+        self.mainframe.protocol(&#34;WM_DELETE_WINDOW&#34;, self.__onClose)
+
+        self.mainframe.title(&#34;SMD Produktion&#34;)
+        # self.mainframe.geometry(&#34;1200x750&#34;)
+        self.mainframe.minsize(width=900, height=570)
+
+        # bind keyboard controlls
+        self.mainframe.bind(&#34;&lt;Control-x&gt;&#34;, self.__onClose)
+        # self.mainframe.bind(&#34;&lt;Control-F1&gt;&#34;, self.__getAPIData)
+        self.mainframe.bind(&#34;&lt;F1&gt;&#34;, self.__startSimulation)
+        self.mainframe.bind(&#34;&lt;F2&gt;&#34;, self.__startCompare)
+
+        # configuring rows
+        Grid.rowconfigure(self.mainframe, 0, weight=1)
+        Grid.rowconfigure(self.mainframe, 1, weight=1)
+        Grid.rowconfigure(self.mainframe, 2, weight=1)
+
+        # configuring columns
+        Grid.columnconfigure(self.mainframe, 0, weight=1)
+        Grid.columnconfigure(self.mainframe, 1, weight=1)
+        Grid.columnconfigure(self.mainframe, 2, weight=1)
+        Grid.columnconfigure(self.mainframe, 3, weight=1)
+        Grid.columnconfigure(self.mainframe, 4, weight=1)
+        Grid.columnconfigure(self.mainframe, 5, weight=1)
+        Grid.columnconfigure(self.mainframe, 6, weight=1)
+        Grid.columnconfigure(self.mainframe, 7, weight=1)
+
+        photo = PhotoImage(file=os.getcwd() + os.path.normpath(&#34;/src/assets/logo.png&#34;))
+        self.mainframe.iconphoto(True, photo)
+        self.calDate = {}
+        self.machines = {}
+        self.OptionList = []
+        self.dateLabel1 = tk.Label(self.mainframe).grid(row=1, column=3, sticky=&#34;nsew&#34;)
+        self.dateLabel2 = tk.Label(self.mainframe).grid(row=1, column=5, sticky=&#34;nsew&#34;)
+        self.config = configparser.ConfigParser()
+        self.__configInit()
+
+        # Create interface elements
+        menubar = tk.Menu(self.mainframe)
+        fileMenu = {
+            &#34;New&#34;: self.__new,
+            &#34;Load&#34;: self.__openNew,
+            &#34;Save&#34;: self.__saveAs,
+            &#34;seperator&#34;: &#34;&#34;,
+            &#34;Exit Strg+x&#34;: self.__onClose,
+        }
+        setupMenu = {
+            &#34;Add Machine&#34;: self.__setupMachines,
+            &#34;View Machines&#34;: self.__viewMachines,
+            &#34;Dummy&#34;: self.__dummy,
+        }
+        self.__createMenu(menubar, &#34;File&#34;, fileMenu)
+        self.__createMenu(menubar, &#34;Setup&#34;, setupMenu)
+        self.__createOptionsMenu(menubar)
+        self.mainframe.config(menu=menubar)
+        # Canvas(self.mainframe)
+        frame = tk.Frame(self.mainframe)
+        frame.grid(row=3, column=0, sticky=&#34;nsew&#34;)
+        MyCanvas(self.mainframe)
+        self.__createButton(8, 0, text=&#34;Compare F2&#34;, function=self.__dummy, margin=50)
+        self.__createButton(2, 0, text=&#34;Simulate F1&#34;, function=self.__simulate)
+
+        self.requests = NetworkRequests(
+            networkAddress=self.config.get(&#34;network&#34;, &#34;api_address&#34;),
+            basePath=self.config.get(&#34;network&#34;, &#34;base_path&#34;),
+        )
+        self.__createForms()
+        self.__loadConfig()
+
+    def __configInit(self) -&gt; configparser.ConfigParser:
+        &#34;&#34;&#34;Initiate the config variables.
+
+        Returns:
+            ConfigParser: Module that contains config settings.
+        &#34;&#34;&#34;
+        path = os.getcwd() + os.path.normpath(&#34;/data/settings/settings.ini&#34;)
+        if exists(path):
+            return self.config.read(path)
+
+        self.config.add_section(&#34;default&#34;)
+        self.config.set(&#34;default&#34;, &#34;randomInterruptMax&#34;, &#34;0&#34;)
+        self.config.set(&#34;default&#34;, &#34;randomInterruptMin&#34;, &#34;0&#34;)
+        self.config.set(&#34;default&#34;, &#34;useIdealState&#34;, &#34;false&#34;)
+        self.config.set(&#34;default&#34;, &#34;randomInterrupt&#34;, &#34;false&#34;)
+        self.config.add_section(&#34;network&#34;)
+        self.config.set(&#34;network&#34;, &#34;api_address&#34;, &#34;http://127.0.0.1:5000&#34;)
+        self.config.set(&#34;network&#34;, &#34;base_path&#34;, &#34;/api/v1/&#34;)
+
+    def __call__(self, *args: any, **kwds: any) -&gt; None:
+        &#34;&#34;&#34;Call this to initate the window.&#34;&#34;&#34;
+        self.mainframe.mainloop()
+
+    def __onClose(self, *args: any, **kwargs: any) -&gt; None:
+        &#34;&#34;&#34;Closing Operation. Saves config variables to file.&#34;&#34;&#34;
+        if messagebox.askokcancel(&#34;Quit&#34;, &#34;Do you want to quit?&#34;):
+            if not exists(os.getcwd() + os.path.normpath(&#34;/data/settings&#34;)):
+                os.mkdir(os.getcwd() + os.path.normpath(&#34;/data/settings&#34;))
+            with open(
+                os.getcwd() + os.path.normpath(&#34;/data/settings/settings.ini&#34;), &#34;w&#34;
+            ) as configfile:
+                self.config.write(configfile)
+            self.mainframe.destroy()
+
+    def __startThread(self, function: FunctionType, *args):
+        &#34;&#34;&#34;Start a new thread with a given function.
+
+        Args:
+            function (FunctionType): The current function.
+        &#34;&#34;&#34;
+        threading.Thread(target=function).start()
+
+    def __dummy(self, text=&#34;&#34;) -&gt; None:
+        &#34;&#34;&#34;Dummy function. Used for testing.
+
+        Args:
+            text (str, optional): Optional Textstring. Defaults to &#34;&#34;.
+        &#34;&#34;&#34;
+        top = tk.Toplevel(self.mainframe)
+        top.geometry(&#34;500x500&#34;)
+        Grid.rowconfigure(top, 0, weight=1)
+
+        Grid.columnconfigure(top, 0, weight=1)
+
+        Grid.rowconfigure(top, 1, weight=1)
+        button_1 = Button(top, text=&#34;Button 1&#34;)
+        button_2 = Button(top, text=&#34;Button 2&#34;)
+        button_1.grid(row=0, column=0, sticky=&#34;nsew&#34;)
+        button_2.grid(row=1, column=0, sticky=&#34;nsew&#34;)
+
+    def __loadConfig(self) -&gt; None:
+        &#34;&#34;&#34;Load a machine config from `.json` file.&#34;&#34;&#34;
+        data = self.__openNew()
+        if data == None:
+            return
+        for i in data[&#34;machines&#34;]:
+            self.machines[i[&#34;machine&#34;]] = Machine(
+                i[&#34;machine&#34;], i[&#34;cph&#34;], i[&#34;nozHeads&#34;], i[&#34;SMD&#34;], i[&#34;offsets&#34;]
+            )
+        self.__viewMachines()
+
+    def __createMenu(self, menubar: tk.Menu, label: str, data: dict) -&gt; None:
+        &#34;&#34;&#34;Create a menu in the menubar.
+
+        Args:
+            menubar (tk.Menu): The current MenuBar instance.
+            label (str): The Label of the menu.
+            data (dict): Options in the menu.
+        &#34;&#34;&#34;
+        filemenu = tk.Menu(menubar, tearoff=0)
+        for key in data:
+            if key == &#34;seperator&#34;:
+                filemenu.add_separator()
+            else:
+                filemenu.add_command(label=key, command=data[key])
+        menubar.add_cascade(label=label, menu=filemenu)
+
+    def __createOptionsMenu(self, menubar: tk.Menu) -&gt; tk.Menu:
+        &#34;&#34;&#34;Creates the Options Menu.
+
+        Args:
+            menubar (tk.Menu): The current MenuBar instance.
+
+        Returns:
+            tk.Menu: The created menu.
+        &#34;&#34;&#34;
+        filemenu = tk.Menu(menubar, tearoff=0)
+        self.useIdealState = tk.BooleanVar()
+        self.useIdealState.set(self.config.getboolean(&#34;default&#34;, &#34;useIdealState&#34;))
+        filemenu.add_checkbutton(
+            label=&#34;Use ideal Simulation Time&#34;,
+            var=self.useIdealState,
+            command=lambda: self.config.set(
+                &#34;default&#34;, &#34;useIdealState&#34;, str(self.useIdealState.get())
+            ),
+        )
+        self.randomInterupt = tk.BooleanVar()
+        self.randomInterupt.set(self.config.getboolean(&#34;default&#34;, &#34;randomInterrupt&#34;))
+        filemenu.add_checkbutton(
+            label=&#34;Use Random Interuptions&#34;,
+            var=self.randomInterupt,
+            command=lambda: self.config.set(
+                &#34;default&#34;, &#34;randomInterrupt&#34;, str(self.randomInterupt.get())
+            ),
+        )
+        filemenu.add_separator()
+        filemenu.add_command(label=&#34;Options&#34;, command=self.__setOptions)
+        menubar.add_cascade(label=&#34;Options&#34;, menu=filemenu)
+
+    def __createButton(
+        self,
+        posX: int,
+        posY: int,
+        text: str,
+        function: FunctionType,
+        margin: int = None,
+    ) -&gt; tk.Button:
+        &#34;&#34;&#34;Creates a Button at the given position.
+
+        Args:
+            posX (int): The X Grid Position.
+            posY (int): The Y Grid Position.
+            text (str): The display text.
+            function (FunctionType): The function to be called on button press.
+            margin (int, optional): Margin to next element in Grid. Defaults to None.
+
+        Returns:
+            tk.Button: The created Button.
+        &#34;&#34;&#34;
+        if margin == None:
+            margin = 30
+        button = tk.Button(
+            master=self.mainframe,
+            height=1,
+            width=10,
+            text=text,
+            command=lambda: self.__startThread(function),
+        )
+        button.grid(column=posX, row=posY, padx=(margin, 0), sticky=&#34;nsew&#34;)
+
+    def __createLabel(self, posX: int, posY: int, text: str) -&gt; tk.Label:
+        &#34;&#34;&#34;Creates a Label at the given position.
+
+        Args:
+            posX (int): The X Grid Position.
+            posY (int): The Y Grid Position.
+            text (str): The display text.
+
+        Returns:
+            tk.Label: The created Label.
+        &#34;&#34;&#34;
+        label = tk.Label(master=self.mainframe, text=text)
+        label.grid(column=posX, row=posY, sticky=&#34;nsew&#34;)
+
+    def __runAPICheck(self, *args):
+        &#34;&#34;&#34;Get Data all Program options from API.&#34;&#34;&#34;
+        request = self.requests.get(&#34;/data/options/&#34;)
+        if type(request) == tuple:
+            controller = Controller(self.mainframe)
+            controller.error(&#34;Connection to the API could not be established!&#34;)
+            self.OptionList = [&#34;API&#34;, &#34;CONNECTION&#34;, &#34;FAILED&#34;]
+        else:
+            self.OptionList = request[&#34;programms&#34;]
+
+        menu = self.option[&#34;menu&#34;]
+        menu.delete(0, &#34;end&#34;)
+        for string in self.OptionList:
+            menu.add_command(
+                label=string, command=lambda value=string: self.product.set(value)
+            )
+
+    def __createForms(self) -&gt; None:
+        &#34;&#34;&#34;Creates the Inputs.&#34;&#34;&#34;
+        tk.Label(self.mainframe, text=&#34;Program:&#34;).grid(row=0, column=0, sticky=&#34;nsew&#34;)
+        tk.Label(self.mainframe, text=&#34;Parts to manufacture:&#34;).grid(
+            row=1, column=0, sticky=&#34;nsew&#34;
+        )
+        tk.Label(self.mainframe, text=&#34;Start Date:&#34;).grid(
+            row=0, column=4, sticky=&#34;nsew&#34;
+        )
+        tk.Label(self.mainframe, text=&#34;End Date:&#34;).grid(row=0, column=6, sticky=&#34;nsew&#34;)
+        self.numManu = tk.Entry(self.mainframe)
+        self.numManu.insert(&#34;end&#34;, 1)
+        self.numManu.grid(row=1, column=1, sticky=&#34;nsew&#34;)
+        self.product = tk.StringVar(self.mainframe)
+        self.product.set(&#34;&#34;)
+        self.option = tk.OptionMenu(self.mainframe, self.product, &#34;&#34;, *self.OptionList)
+        self.option.grid(row=0, column=1, sticky=&#34;nsew&#34;)
+        self.option.bind(&#34;&lt;Enter&gt;&#34;, self.__runAPICheck)
+
+        self.date1 = self.__createButton(
+            5, 0, &#34;Select&#34;, function=lambda: self.__showCal(&#34;start&#34;, 5, 1)
+        )
+        self.date2 = self.__createButton(
+            7, 0, &#34;Select&#34;, function=lambda: self.__showCal(&#34;end&#34;, 7, 1)
+        )
+
+    def __showCal(self, i: str, posX: int, posY: int) -&gt; tk.Toplevel:
+        &#34;&#34;&#34;Creates the popup Calendar.
+
+        Args:
+            i (str): Current time point.
+            posX (int): The X Grid Position
+            posY (int): The Y Grid Position
+
+        Returns:
+            tk.Toplevel: The created Calendar Toplevel
+        &#34;&#34;&#34;
+        top = tk.Toplevel(self.mainframe)
+        cal = Calendar(top, font=&#34;Arial 14&#34;, selectmode=&#34;day&#34;)
+
+        def getDate(cal: Calendar):
+            top.withdraw()
+            self.calDate[i] = cal.selection_get()
+            self.__createLabel(posX, posY, self.calDate[i])
+
+        cal.pack(fill=&#34;both&#34;, expand=True)
+        ttk.Button(top, text=&#34;ok&#34;, command=lambda: getDate(cal)).pack()
+
+    def __setupMachines(self) -&gt; tk.Toplevel:
+        &#34;&#34;&#34;Creates the form for Machine setup.
+
+        Returns:
+            tk.Toplevel: The created Form.
+        &#34;&#34;&#34;
+        top = tk.Toplevel(self.mainframe)
+        top.title(&#34;Add Machine&#34;)
+        menubar = tk.Menu(top)
+        tk.Label(top, text=&#34;Machine Name:&#34;).grid(row=0, column=0)
+        nameEntry = tk.Entry(top)
+        nameEntry.grid(row=0, column=1)
+
+        tk.Label(top, text=&#34;CPH:&#34;).grid(row=1, column=0)
+        cphEntry = tk.Entry(top)
+        cphEntry.insert(&#34;end&#34;, &#34;1&#34;)
+        cphEntry.grid(row=1, column=1)
+
+        tk.Label(top, text=&#34;Nozzle Heads:&#34;).grid(row=2, column=0)
+        nozHeads = tk.Entry(top)
+        nozHeads.insert(&#34;end&#34;, &#34;1&#34;)
+        nozHeads.grid(row=2, column=1)
+
+        self.button_pressed = tk.StringVar()
+        smdMachine = tk.BooleanVar()
+        smdMachine.set(False)
+        tk.Label(top, text=&#34;SMD Machine:&#34;).grid(row=3, column=0)
+
+        # Offset entries
+        tk.Label(top, text=&#34;Offsets&#34;).grid(row=4, column=0)
+        tk.Label(top, text=&#34;X&#34;).grid(row=4, column=1)
+        tk.Label(top, text=&#34;Y&#34;).grid(row=4, column=2)
+        tk.Label(top, text=&#34;Checkpoint:&#34;).grid(row=5, column=0)
+        checkpointX = tk.Entry(top)
+        checkpointX.insert(&#34;end&#34;, &#34;0&#34;)
+        checkpointX.grid(row=5, column=1)
+        checkpointY = tk.Entry(top)
+        checkpointY.insert(&#34;end&#34;, &#34;0&#34;)
+        checkpointY.grid(row=5, column=2)
+
+        tk.Label(top, text=&#34;PCB:&#34;).grid(row=6, column=0)
+        pcbX = tk.Entry(top)
+        pcbX.insert(&#34;end&#34;, &#34;0&#34;)
+        pcbX.grid(row=6, column=1)
+        pcbY = tk.Entry(top)
+        pcbY.insert(&#34;end&#34;, &#34;0&#34;)
+        pcbY.grid(row=6, column=2)
+
+        tk.Label(top, text=&#34;Tool Pickup:&#34;).grid(row=7, column=0)
+        toolX = tk.Entry(top)
+        toolX.insert(&#34;end&#34;, &#34;0&#34;)
+        toolX.grid(row=7, column=1)
+        toolY = tk.Entry(top)
+        toolY.insert(&#34;end&#34;, &#34;0&#34;)
+        toolY.grid(row=7, column=2)
+
+        # feedercart 1
+        row1 = 8
+        tk.Label(top, text=&#34;Feedercart Front Left:&#34;).grid(row=row1, column=0)
+        feedercart_1x = tk.Entry(top)
+        feedercart_1x.insert(&#34;end&#34;, &#34;0&#34;)
+        feedercart_1x.grid(row=row1, column=1)
+        feedercart_1y = tk.Entry(top)
+        feedercart_1y.insert(&#34;end&#34;, &#34;0&#34;)
+        feedercart_1y.grid(row=row1, column=2)
+        # feedercart 2
+        row2 = 9
+        tk.Label(top, text=&#34;Feedercart Back Left:&#34;).grid(row=row2, column=0)
+        feedercart_2x = tk.Entry(top)
+        feedercart_2x.insert(&#34;end&#34;, &#34;0&#34;)
+        feedercart_2x.grid(row=row2, column=1)
+        feedercart_2y = tk.Entry(top)
+        feedercart_2y.insert(&#34;end&#34;, &#34;0&#34;)
+        feedercart_2y.grid(row=row2, column=2)
+        # feedercart 3
+        row3 = 10
+        tk.Label(top, text=&#34;Feedercart Front Right:&#34;).grid(row=row3, column=0)
+        feedercart_3x = tk.Entry(top)
+        feedercart_3x.insert(&#34;end&#34;, &#34;0&#34;)
+        feedercart_3x.grid(row=row3, column=1)
+        feedercart_3y = tk.Entry(top)
+        feedercart_3y.insert(&#34;end&#34;, &#34;0&#34;)
+        feedercart_3y.grid(row=row3, column=2)
+        # feedercart 4
+        row4 = 11
+        tk.Label(top, text=&#34;Feedercart Back Right:&#34;).grid(row=row4, column=0)
+        feedercart_4x = tk.Entry(top)
+        feedercart_4x.insert(&#34;end&#34;, &#34;0&#34;)
+        feedercart_4x.grid(row=row4, column=1)
+        feedercart_4y = tk.Entry(top)
+        feedercart_4y.insert(&#34;end&#34;, &#34;0&#34;)
+        feedercart_4y.grid(row=row4, column=2)
+
+        machineType = tk.Checkbutton(top, var=smdMachine)
+        machineType.grid(row=3, column=1)
+
+        def clearMachine():
+            nameEntry.delete(0, &#34;end&#34;)
+            cphEntry.delete(0, &#34;end&#34;)
+            nozHeads.delete(0, &#34;end&#34;)
+
+        def close():
+            top.withdraw()
+
+        def confirm():
+            try:
+                self.button_pressed.set(&#34;button pressed&#34;)
+                name = nameEntry.get()
+                cph = int(cphEntry.get())
+                noz = int(nozHeads.get())
+                if smdMachine.get() == False:
+                    self.machines[name] = Machine(name, cph, noz, smdMachine.get())
+                    return close()
+                args = {
+                    &#34;checkpoint&#34;: [int(checkpointX.get()), int(checkpointY.get())],
+                    &#34;pcb&#34;: [int(pcbX.get()), int(pcbY.get())],
+                    &#34;tools&#34;: [int(toolX.get()), int(toolY.get())],
+                    &#34;feedercarts&#34;: [
+                        {&#34;ST-FL&#34;: [int(feedercart_1x.get()), int(feedercart_1y.get())]},
+                        {&#34;ST-RL&#34;: [int(feedercart_2x.get()), int(feedercart_2y.get())]},
+                        {&#34;ST-FR&#34;: [feedercart_3x.get(), feedercart_3y.get()]},
+                        {&#34;ST-RR&#34;: [feedercart_4x.get(), feedercart_4y.get()]},
+                    ],
+                }
+                self.machines[name] = Machine(
+                    name, cph, noz, smdMachine.get(), offsets=args
+                )
+                close()
+            except Exception as e:
+                tk.Label(
+                    top, text=&#34;Please only use Numbers for CPH and Nozzle Heads&#34;
+                ).grid(row=51, column=1)
+
+        def load():
+            self.machines.clear()
+            data = self.__openNew()
+            if data == None:
+                return
+            for i in data[&#34;machines&#34;]:
+                self.machines[i[&#34;machine&#34;]] = Machine(
+                    i[&#34;machine&#34;], i[&#34;cph&#34;], i[&#34;nozHeads&#34;], i[&#34;SMD&#34;], i[&#34;offsets&#34;]
+                )
+            close()
+
+        def nextMachine():
+            confirm()
+            self.__setupMachines()
+
+        fileMenu = {&#34;New&#34;: clearMachine, &#34;Load&#34;: load, &#34;Exit&#34;: close}
+        self.conButton = ttk.Button(top, text=&#34;OK&#34;, command=confirm)
+        self.conButton.grid(row=50, column=0)
+        nextButton = ttk.Button(top, text=&#34;Add another&#34;, command=nextMachine)
+        nextButton.grid(row=50, column=1)
+        self.__createMenu(menubar, &#34;File&#34;, fileMenu)
+        top.config(menu=menubar)
+
+    def __viewMachines(self) -&gt; tk.Toplevel:
+        &#34;&#34;&#34;Creates the window to view the loaded machines.
+
+        Returns:
+            tk.Toplevel: The created Window.
+        &#34;&#34;&#34;
+        top = tk.Toplevel(self.mainframe)
+        top.geometry(&#34;300x200&#34;)
+        top.title(&#34;Machines&#34;)
+        menubar = tk.Menu(top)
+        scrollbar = tk.Scrollbar(top)
+        scrollbar.pack(side=&#34;right&#34;, fill=&#34;y&#34;)
+        mylist = tk.Listbox(top, yscrollcommand=scrollbar.set)
+
+        def createEntry(machine: Machine):
+            mylist.insert(&#34;end&#34;, f&#34;Machine: {machine.machineName} &#34;)
+            mylist.insert(&#34;end&#34;, f&#34;CPH: {machine.cph} &#34;)
+            mylist.insert(&#34;end&#34;, f&#34;Velocity: {machine.velocity} &#34;)
+            mylist.insert(&#34;end&#34;, f&#34;Nozzle Heads: {machine.nozHeads} &#34;)
+            mylist.insert(&#34;end&#34;, f&#34;Offsets: {machine.offsets} &#34;)
+            mylist.insert(&#34;end&#34;, f&#34;-------------&#34;)
+
+        for key in self.machines:
+            createEntry(self.machines[key])
+        mylist.pack(side=&#34;top&#34;, fill=&#34;both&#34;)
+        scrollbar.config(command=mylist.yview)
+
+        def close():
+            top.withdraw()
+
+        def clearMachines():
+            close()
+            self.machines.clear()
+
+        def save():
+            machines = []
+            for key in self.machines:
+                machines.append(self.machines[key].getData())
+
+            data = {&#34;machines&#34;: machines}
+            self.__saveAs(data)
+
+        def load():
+            self.machines.clear()
+            data = self.__openNew()
+            if data == None:
+                return
+            for i in data[&#34;machines&#34;]:
+                self.machines[i[&#34;machine&#34;]] = Machine(
+                    i[&#34;machine&#34;], i[&#34;cph&#34;], i[&#34;nozHeads&#34;], i[&#34;SMD&#34;], i[&#34;offsets&#34;]
+                )
+            close()
+            self.__viewMachines()
+
+        fileMenu = {&#34;Clear&#34;: clearMachines, &#34;Save&#34;: save, &#34;Load&#34;: load, &#34;Exit&#34;: close}
+        self.__createMenu(menubar, &#34;File&#34;, fileMenu)
+        top.config(menu=menubar)
+        ttk.Button(top, text=&#34;ok&#34;, command=close).pack()
+
+    def __setOptions(self) -&gt; tk.Toplevel:
+        &#34;&#34;&#34;Creates window for option management.
+
+        Returns:
+            tk.Toplevel: The created window.
+        &#34;&#34;&#34;
+        top = tk.Toplevel(self.mainframe)
+        top.geometry(&#34;300x150&#34;)
+        top.title(&#34;Options&#34;)
+
+        def callback():
+            max = randominterruptmax.get()
+            min = randominterruptmin.get()
+            address = networkAddress.get()
+            if min &gt; max:
+                return tk.Label(
+                    top,
+                    text=&#34;The maximum interrupt value needs to be higher then the minimum!&#34;,
+                    foreground=&#34;red&#34;,
+                    wraplengt=200,
+                ).pack()
+            self.config.set(&#34;default&#34;, &#34;randominterruptmax&#34;, str(max))
+            self.config.set(&#34;default&#34;, &#34;randominterruptmin&#34;, str(min))
+            self.config.set(&#34;network&#34;, &#34;api_address&#34;, str(address))
+            top.withdraw()
+            return True
+
+        tk.Label(top, text=&#34;Random Interruptions Max&#34;).pack()
+        randominterruptmax = tk.IntVar()
+        randominterruptmax.set(self.config.getint(&#34;default&#34;, &#34;randominterruptmax&#34;))
+        tk.Entry(top, textvariable=randominterruptmax).pack()
+        tk.Label(top, text=&#34;Random Interruptions Min&#34;).pack()
+        randominterruptmin = tk.IntVar()
+        randominterruptmin.set(self.config.getint(&#34;default&#34;, &#34;randominterruptmin&#34;))
+        tk.Entry(top, textvariable=randominterruptmin).pack()
+        tk.Label(top, text=&#34;API Network Address&#34;).pack()
+        networkAddress = tk.StringVar()
+        networkAddress.set(self.config.get(&#34;network&#34;, &#34;api_address&#34;))
+        tk.Entry(top, textvariable=networkAddress).pack()
+
+        ttk.Button(top, text=&#34;OK&#34;, command=callback).pack()
+
+    def __new(self) -&gt; None:
+        &#34;&#34;&#34;Clears all entries.&#34;&#34;&#34;
+        self.numManu.delete(0, &#34;end&#34;)
+
+    def __saveAs(self, data: dict) -&gt; None:
+        &#34;&#34;&#34;Save the privided Data to `.json`.
+
+        Args:
+            data (dict): The data to save.
+        &#34;&#34;&#34;
+        file_opt = options = {}
+        options[&#34;filetypes&#34;] = [(&#34;JSON files&#34;, &#34;.json&#34;), (&#34;all files&#34;, &#34;.*&#34;)]
+        options[&#34;initialdir&#34;] = os.getcwd() + os.path.normpath(&#34;/data/presets&#34;)
+
+        filename = filedialog.asksaveasfile(defaultextension=&#34;.json&#34;, **file_opt)
+        if filename is None:
+            return
+
+        json.dump(data, filename)
+
+    def __openNew(self) -&gt; (None | dict):
+        &#34;&#34;&#34;Opens an interface for file loading.
+
+        Returns:
+            Dict: The loaded `.json` file.
+            None: If no file is selected.
+        &#34;&#34;&#34;
+        file_opt = options = {}
+        options[&#34;filetypes&#34;] = [(&#34;JSON files&#34;, &#34;.json&#34;), (&#34;all files&#34;, &#34;.*&#34;)]
+        options[&#34;initialdir&#34;] = os.getcwd() + os.path.normpath(&#34;/data/presets&#34;)
+        filename = filedialog.askopenfilename(**file_opt)
+        if filename == None or filename == &#34;&#34;:
+            return
+        with open(filename) as file:
+            data = json.load(file)
+
+        return data
+
+    def __compare(self) -&gt; None:
+        &#34;&#34;&#34;Dummy operation for now.&#34;&#34;&#34;
+        # startDate = str(self.calDate[&#34;start&#34;])
+        # endDate = str(self.calDate[&#34;end&#34;])
+
+        request = requests.get(
+            f&#34;{self.config.get(&#39;network&#39;, &#39;api_address&#39;)}/data/options&#34;
+        )
+        controller = Controller(self.mainframe)
+        controller.error(request.status_code)
+        print(request.json())
+
+    def __startSimulation(self, *args: any, **kwargs: any):
+        &#34;&#34;&#34;Starts simulation in a new Thread.&#34;&#34;&#34;
+        threading.Thread(target=self.__simulate).start()
+
+    def __startCompare(self, *args: any, **kwargs: any):
+        &#34;&#34;&#34;Starts Compare function in a new Thread.&#34;&#34;&#34;
+        threading.Thread(target=self.__compare).start()
+
+    def __simulate(self) -&gt; None:
+        &#34;&#34;&#34;Simulate the manufacturing environment.&#34;&#34;&#34;
+        machineTime = {}
+        setupTime = {}
+        coords = {}
+        product_id = self.product.get()
+        controller = Controller(self.mainframe)
+        controller.wait()
+        randomInterrupt = (
+            (0, 0)
+            if self.randomInterupt.get() == False
+            else (
+                self.config.getint(&#34;default&#34;, &#34;randominterruptmin&#34;),
+                self.config.getint(&#34;default&#34;, &#34;randominterruptmax&#34;),
+            )
+        )
+        # return
+        if len(self.machines) == 0:
+            return controller.error(
+                &#34;Please load or create a machine configuration first!&#34;
+            )
+        for i in self.machines:
+            machine: Machine = self.machines[i]
+            data = machine.getData()
+            manufacturingType = &#34;manufacturing&#34;
+            if self.machines[i].SMD == False:
+                manufacturingType = &#34;coating&#34;
+
+            params = {
+                &#34;productId&#34;: product_id,
+                &#34;machine&#34;: machine.machineName,
+                &#34;randomInterMin&#34;: randomInterrupt[0],
+                &#34;randomInterMax&#34;: randomInterrupt[1],
+                &#34;useIdealState&#34;: self.useIdealState.get(),
+            }
+            requestData = self.requests.get(&#34;/simulate/setup/&#34;, params)
+
+            if type(requestData) == tuple:
+                return controller.error(requestData[1])
+
+            setupTime[machine.machineName] = requestData[&#34;time&#34;]
+
+            request = self.requests.put(f&#34;/simulate/{manufacturingType}/&#34;, params, data)
+
+            if type(request) == tuple:
+                return controller.error(request[1])
+
+            if request.status_code != 200:
+                error = f&#34;{request.status_code} - {request.reason} &#34;
+                return controller.error(error)
+            requestData = request.json()
+            machineTime[self.machines[i].machineName] = requestData[&#34;time&#34;]
+            if &#34;plot_x&#34; in requestData:
+                coords[self.machines[i].machineName] = {
+                    &#34;X&#34;: requestData[&#34;plot_x&#34;],
+                    &#34;Y&#34;: requestData[&#34;plot_y&#34;],
+                }
+
+        controller(
+            coords=coords,
+            mTime=machineTime,
+            sTime=setupTime,
+            numParts=int(self.numManu.get()),
+            randomInterupt=randomInterrupt,
+            prodName=product_id,
+        )
+
+
+if __name__ == &#34;__main__&#34;:
+    Interface()()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="src.interface.Interface"><code class="flex name class">
+<span>class <span class="ident">Interface</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Creates the interface and it's child modules.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Interface:
+    def __init__(self) -&gt; None:
+        &#34;&#34;&#34;Creates the interface and it&#39;s child modules.&#34;&#34;&#34;
+        self.mainframe = tk.Tk()
+        self.mainframe.protocol(&#34;WM_DELETE_WINDOW&#34;, self.__onClose)
+
+        self.mainframe.title(&#34;SMD Produktion&#34;)
+        # self.mainframe.geometry(&#34;1200x750&#34;)
+        self.mainframe.minsize(width=900, height=570)
+
+        # bind keyboard controlls
+        self.mainframe.bind(&#34;&lt;Control-x&gt;&#34;, self.__onClose)
+        # self.mainframe.bind(&#34;&lt;Control-F1&gt;&#34;, self.__getAPIData)
+        self.mainframe.bind(&#34;&lt;F1&gt;&#34;, self.__startSimulation)
+        self.mainframe.bind(&#34;&lt;F2&gt;&#34;, self.__startCompare)
+
+        # configuring rows
+        Grid.rowconfigure(self.mainframe, 0, weight=1)
+        Grid.rowconfigure(self.mainframe, 1, weight=1)
+        Grid.rowconfigure(self.mainframe, 2, weight=1)
+
+        # configuring columns
+        Grid.columnconfigure(self.mainframe, 0, weight=1)
+        Grid.columnconfigure(self.mainframe, 1, weight=1)
+        Grid.columnconfigure(self.mainframe, 2, weight=1)
+        Grid.columnconfigure(self.mainframe, 3, weight=1)
+        Grid.columnconfigure(self.mainframe, 4, weight=1)
+        Grid.columnconfigure(self.mainframe, 5, weight=1)
+        Grid.columnconfigure(self.mainframe, 6, weight=1)
+        Grid.columnconfigure(self.mainframe, 7, weight=1)
+
+        photo = PhotoImage(file=os.getcwd() + os.path.normpath(&#34;/src/assets/logo.png&#34;))
+        self.mainframe.iconphoto(True, photo)
+        self.calDate = {}
+        self.machines = {}
+        self.OptionList = []
+        self.dateLabel1 = tk.Label(self.mainframe).grid(row=1, column=3, sticky=&#34;nsew&#34;)
+        self.dateLabel2 = tk.Label(self.mainframe).grid(row=1, column=5, sticky=&#34;nsew&#34;)
+        self.config = configparser.ConfigParser()
+        self.__configInit()
+
+        # Create interface elements
+        menubar = tk.Menu(self.mainframe)
+        fileMenu = {
+            &#34;New&#34;: self.__new,
+            &#34;Load&#34;: self.__openNew,
+            &#34;Save&#34;: self.__saveAs,
+            &#34;seperator&#34;: &#34;&#34;,
+            &#34;Exit Strg+x&#34;: self.__onClose,
+        }
+        setupMenu = {
+            &#34;Add Machine&#34;: self.__setupMachines,
+            &#34;View Machines&#34;: self.__viewMachines,
+            &#34;Dummy&#34;: self.__dummy,
+        }
+        self.__createMenu(menubar, &#34;File&#34;, fileMenu)
+        self.__createMenu(menubar, &#34;Setup&#34;, setupMenu)
+        self.__createOptionsMenu(menubar)
+        self.mainframe.config(menu=menubar)
+        # Canvas(self.mainframe)
+        frame = tk.Frame(self.mainframe)
+        frame.grid(row=3, column=0, sticky=&#34;nsew&#34;)
+        MyCanvas(self.mainframe)
+        self.__createButton(8, 0, text=&#34;Compare F2&#34;, function=self.__dummy, margin=50)
+        self.__createButton(2, 0, text=&#34;Simulate F1&#34;, function=self.__simulate)
+
+        self.requests = NetworkRequests(
+            networkAddress=self.config.get(&#34;network&#34;, &#34;api_address&#34;),
+            basePath=self.config.get(&#34;network&#34;, &#34;base_path&#34;),
+        )
+        self.__createForms()
+        self.__loadConfig()
+
+    def __configInit(self) -&gt; configparser.ConfigParser:
+        &#34;&#34;&#34;Initiate the config variables.
+
+        Returns:
+            ConfigParser: Module that contains config settings.
+        &#34;&#34;&#34;
+        path = os.getcwd() + os.path.normpath(&#34;/data/settings/settings.ini&#34;)
+        if exists(path):
+            return self.config.read(path)
+
+        self.config.add_section(&#34;default&#34;)
+        self.config.set(&#34;default&#34;, &#34;randomInterruptMax&#34;, &#34;0&#34;)
+        self.config.set(&#34;default&#34;, &#34;randomInterruptMin&#34;, &#34;0&#34;)
+        self.config.set(&#34;default&#34;, &#34;useIdealState&#34;, &#34;false&#34;)
+        self.config.set(&#34;default&#34;, &#34;randomInterrupt&#34;, &#34;false&#34;)
+        self.config.add_section(&#34;network&#34;)
+        self.config.set(&#34;network&#34;, &#34;api_address&#34;, &#34;http://127.0.0.1:5000&#34;)
+        self.config.set(&#34;network&#34;, &#34;base_path&#34;, &#34;/api/v1/&#34;)
+
+    def __call__(self, *args: any, **kwds: any) -&gt; None:
+        &#34;&#34;&#34;Call this to initate the window.&#34;&#34;&#34;
+        self.mainframe.mainloop()
+
+    def __onClose(self, *args: any, **kwargs: any) -&gt; None:
+        &#34;&#34;&#34;Closing Operation. Saves config variables to file.&#34;&#34;&#34;
+        if messagebox.askokcancel(&#34;Quit&#34;, &#34;Do you want to quit?&#34;):
+            if not exists(os.getcwd() + os.path.normpath(&#34;/data/settings&#34;)):
+                os.mkdir(os.getcwd() + os.path.normpath(&#34;/data/settings&#34;))
+            with open(
+                os.getcwd() + os.path.normpath(&#34;/data/settings/settings.ini&#34;), &#34;w&#34;
+            ) as configfile:
+                self.config.write(configfile)
+            self.mainframe.destroy()
+
+    def __startThread(self, function: FunctionType, *args):
+        &#34;&#34;&#34;Start a new thread with a given function.
+
+        Args:
+            function (FunctionType): The current function.
+        &#34;&#34;&#34;
+        threading.Thread(target=function).start()
+
+    def __dummy(self, text=&#34;&#34;) -&gt; None:
+        &#34;&#34;&#34;Dummy function. Used for testing.
+
+        Args:
+            text (str, optional): Optional Textstring. Defaults to &#34;&#34;.
+        &#34;&#34;&#34;
+        top = tk.Toplevel(self.mainframe)
+        top.geometry(&#34;500x500&#34;)
+        Grid.rowconfigure(top, 0, weight=1)
+
+        Grid.columnconfigure(top, 0, weight=1)
+
+        Grid.rowconfigure(top, 1, weight=1)
+        button_1 = Button(top, text=&#34;Button 1&#34;)
+        button_2 = Button(top, text=&#34;Button 2&#34;)
+        button_1.grid(row=0, column=0, sticky=&#34;nsew&#34;)
+        button_2.grid(row=1, column=0, sticky=&#34;nsew&#34;)
+
+    def __loadConfig(self) -&gt; None:
+        &#34;&#34;&#34;Load a machine config from `.json` file.&#34;&#34;&#34;
+        data = self.__openNew()
+        if data == None:
+            return
+        for i in data[&#34;machines&#34;]:
+            self.machines[i[&#34;machine&#34;]] = Machine(
+                i[&#34;machine&#34;], i[&#34;cph&#34;], i[&#34;nozHeads&#34;], i[&#34;SMD&#34;], i[&#34;offsets&#34;]
+            )
+        self.__viewMachines()
+
+    def __createMenu(self, menubar: tk.Menu, label: str, data: dict) -&gt; None:
+        &#34;&#34;&#34;Create a menu in the menubar.
+
+        Args:
+            menubar (tk.Menu): The current MenuBar instance.
+            label (str): The Label of the menu.
+            data (dict): Options in the menu.
+        &#34;&#34;&#34;
+        filemenu = tk.Menu(menubar, tearoff=0)
+        for key in data:
+            if key == &#34;seperator&#34;:
+                filemenu.add_separator()
+            else:
+                filemenu.add_command(label=key, command=data[key])
+        menubar.add_cascade(label=label, menu=filemenu)
+
+    def __createOptionsMenu(self, menubar: tk.Menu) -&gt; tk.Menu:
+        &#34;&#34;&#34;Creates the Options Menu.
+
+        Args:
+            menubar (tk.Menu): The current MenuBar instance.
+
+        Returns:
+            tk.Menu: The created menu.
+        &#34;&#34;&#34;
+        filemenu = tk.Menu(menubar, tearoff=0)
+        self.useIdealState = tk.BooleanVar()
+        self.useIdealState.set(self.config.getboolean(&#34;default&#34;, &#34;useIdealState&#34;))
+        filemenu.add_checkbutton(
+            label=&#34;Use ideal Simulation Time&#34;,
+            var=self.useIdealState,
+            command=lambda: self.config.set(
+                &#34;default&#34;, &#34;useIdealState&#34;, str(self.useIdealState.get())
+            ),
+        )
+        self.randomInterupt = tk.BooleanVar()
+        self.randomInterupt.set(self.config.getboolean(&#34;default&#34;, &#34;randomInterrupt&#34;))
+        filemenu.add_checkbutton(
+            label=&#34;Use Random Interuptions&#34;,
+            var=self.randomInterupt,
+            command=lambda: self.config.set(
+                &#34;default&#34;, &#34;randomInterrupt&#34;, str(self.randomInterupt.get())
+            ),
+        )
+        filemenu.add_separator()
+        filemenu.add_command(label=&#34;Options&#34;, command=self.__setOptions)
+        menubar.add_cascade(label=&#34;Options&#34;, menu=filemenu)
+
+    def __createButton(
+        self,
+        posX: int,
+        posY: int,
+        text: str,
+        function: FunctionType,
+        margin: int = None,
+    ) -&gt; tk.Button:
+        &#34;&#34;&#34;Creates a Button at the given position.
+
+        Args:
+            posX (int): The X Grid Position.
+            posY (int): The Y Grid Position.
+            text (str): The display text.
+            function (FunctionType): The function to be called on button press.
+            margin (int, optional): Margin to next element in Grid. Defaults to None.
+
+        Returns:
+            tk.Button: The created Button.
+        &#34;&#34;&#34;
+        if margin == None:
+            margin = 30
+        button = tk.Button(
+            master=self.mainframe,
+            height=1,
+            width=10,
+            text=text,
+            command=lambda: self.__startThread(function),
+        )
+        button.grid(column=posX, row=posY, padx=(margin, 0), sticky=&#34;nsew&#34;)
+
+    def __createLabel(self, posX: int, posY: int, text: str) -&gt; tk.Label:
+        &#34;&#34;&#34;Creates a Label at the given position.
+
+        Args:
+            posX (int): The X Grid Position.
+            posY (int): The Y Grid Position.
+            text (str): The display text.
+
+        Returns:
+            tk.Label: The created Label.
+        &#34;&#34;&#34;
+        label = tk.Label(master=self.mainframe, text=text)
+        label.grid(column=posX, row=posY, sticky=&#34;nsew&#34;)
+
+    def __runAPICheck(self, *args):
+        &#34;&#34;&#34;Get Data all Program options from API.&#34;&#34;&#34;
+        request = self.requests.get(&#34;/data/options/&#34;)
+        if type(request) == tuple:
+            controller = Controller(self.mainframe)
+            controller.error(&#34;Connection to the API could not be established!&#34;)
+            self.OptionList = [&#34;API&#34;, &#34;CONNECTION&#34;, &#34;FAILED&#34;]
+        else:
+            self.OptionList = request[&#34;programms&#34;]
+
+        menu = self.option[&#34;menu&#34;]
+        menu.delete(0, &#34;end&#34;)
+        for string in self.OptionList:
+            menu.add_command(
+                label=string, command=lambda value=string: self.product.set(value)
+            )
+
+    def __createForms(self) -&gt; None:
+        &#34;&#34;&#34;Creates the Inputs.&#34;&#34;&#34;
+        tk.Label(self.mainframe, text=&#34;Program:&#34;).grid(row=0, column=0, sticky=&#34;nsew&#34;)
+        tk.Label(self.mainframe, text=&#34;Parts to manufacture:&#34;).grid(
+            row=1, column=0, sticky=&#34;nsew&#34;
+        )
+        tk.Label(self.mainframe, text=&#34;Start Date:&#34;).grid(
+            row=0, column=4, sticky=&#34;nsew&#34;
+        )
+        tk.Label(self.mainframe, text=&#34;End Date:&#34;).grid(row=0, column=6, sticky=&#34;nsew&#34;)
+        self.numManu = tk.Entry(self.mainframe)
+        self.numManu.insert(&#34;end&#34;, 1)
+        self.numManu.grid(row=1, column=1, sticky=&#34;nsew&#34;)
+        self.product = tk.StringVar(self.mainframe)
+        self.product.set(&#34;&#34;)
+        self.option = tk.OptionMenu(self.mainframe, self.product, &#34;&#34;, *self.OptionList)
+        self.option.grid(row=0, column=1, sticky=&#34;nsew&#34;)
+        self.option.bind(&#34;&lt;Enter&gt;&#34;, self.__runAPICheck)
+
+        self.date1 = self.__createButton(
+            5, 0, &#34;Select&#34;, function=lambda: self.__showCal(&#34;start&#34;, 5, 1)
+        )
+        self.date2 = self.__createButton(
+            7, 0, &#34;Select&#34;, function=lambda: self.__showCal(&#34;end&#34;, 7, 1)
+        )
+
+    def __showCal(self, i: str, posX: int, posY: int) -&gt; tk.Toplevel:
+        &#34;&#34;&#34;Creates the popup Calendar.
+
+        Args:
+            i (str): Current time point.
+            posX (int): The X Grid Position
+            posY (int): The Y Grid Position
+
+        Returns:
+            tk.Toplevel: The created Calendar Toplevel
+        &#34;&#34;&#34;
+        top = tk.Toplevel(self.mainframe)
+        cal = Calendar(top, font=&#34;Arial 14&#34;, selectmode=&#34;day&#34;)
+
+        def getDate(cal: Calendar):
+            top.withdraw()
+            self.calDate[i] = cal.selection_get()
+            self.__createLabel(posX, posY, self.calDate[i])
+
+        cal.pack(fill=&#34;both&#34;, expand=True)
+        ttk.Button(top, text=&#34;ok&#34;, command=lambda: getDate(cal)).pack()
+
+    def __setupMachines(self) -&gt; tk.Toplevel:
+        &#34;&#34;&#34;Creates the form for Machine setup.
+
+        Returns:
+            tk.Toplevel: The created Form.
+        &#34;&#34;&#34;
+        top = tk.Toplevel(self.mainframe)
+        top.title(&#34;Add Machine&#34;)
+        menubar = tk.Menu(top)
+        tk.Label(top, text=&#34;Machine Name:&#34;).grid(row=0, column=0)
+        nameEntry = tk.Entry(top)
+        nameEntry.grid(row=0, column=1)
+
+        tk.Label(top, text=&#34;CPH:&#34;).grid(row=1, column=0)
+        cphEntry = tk.Entry(top)
+        cphEntry.insert(&#34;end&#34;, &#34;1&#34;)
+        cphEntry.grid(row=1, column=1)
+
+        tk.Label(top, text=&#34;Nozzle Heads:&#34;).grid(row=2, column=0)
+        nozHeads = tk.Entry(top)
+        nozHeads.insert(&#34;end&#34;, &#34;1&#34;)
+        nozHeads.grid(row=2, column=1)
+
+        self.button_pressed = tk.StringVar()
+        smdMachine = tk.BooleanVar()
+        smdMachine.set(False)
+        tk.Label(top, text=&#34;SMD Machine:&#34;).grid(row=3, column=0)
+
+        # Offset entries
+        tk.Label(top, text=&#34;Offsets&#34;).grid(row=4, column=0)
+        tk.Label(top, text=&#34;X&#34;).grid(row=4, column=1)
+        tk.Label(top, text=&#34;Y&#34;).grid(row=4, column=2)
+        tk.Label(top, text=&#34;Checkpoint:&#34;).grid(row=5, column=0)
+        checkpointX = tk.Entry(top)
+        checkpointX.insert(&#34;end&#34;, &#34;0&#34;)
+        checkpointX.grid(row=5, column=1)
+        checkpointY = tk.Entry(top)
+        checkpointY.insert(&#34;end&#34;, &#34;0&#34;)
+        checkpointY.grid(row=5, column=2)
+
+        tk.Label(top, text=&#34;PCB:&#34;).grid(row=6, column=0)
+        pcbX = tk.Entry(top)
+        pcbX.insert(&#34;end&#34;, &#34;0&#34;)
+        pcbX.grid(row=6, column=1)
+        pcbY = tk.Entry(top)
+        pcbY.insert(&#34;end&#34;, &#34;0&#34;)
+        pcbY.grid(row=6, column=2)
+
+        tk.Label(top, text=&#34;Tool Pickup:&#34;).grid(row=7, column=0)
+        toolX = tk.Entry(top)
+        toolX.insert(&#34;end&#34;, &#34;0&#34;)
+        toolX.grid(row=7, column=1)
+        toolY = tk.Entry(top)
+        toolY.insert(&#34;end&#34;, &#34;0&#34;)
+        toolY.grid(row=7, column=2)
+
+        # feedercart 1
+        row1 = 8
+        tk.Label(top, text=&#34;Feedercart Front Left:&#34;).grid(row=row1, column=0)
+        feedercart_1x = tk.Entry(top)
+        feedercart_1x.insert(&#34;end&#34;, &#34;0&#34;)
+        feedercart_1x.grid(row=row1, column=1)
+        feedercart_1y = tk.Entry(top)
+        feedercart_1y.insert(&#34;end&#34;, &#34;0&#34;)
+        feedercart_1y.grid(row=row1, column=2)
+        # feedercart 2
+        row2 = 9
+        tk.Label(top, text=&#34;Feedercart Back Left:&#34;).grid(row=row2, column=0)
+        feedercart_2x = tk.Entry(top)
+        feedercart_2x.insert(&#34;end&#34;, &#34;0&#34;)
+        feedercart_2x.grid(row=row2, column=1)
+        feedercart_2y = tk.Entry(top)
+        feedercart_2y.insert(&#34;end&#34;, &#34;0&#34;)
+        feedercart_2y.grid(row=row2, column=2)
+        # feedercart 3
+        row3 = 10
+        tk.Label(top, text=&#34;Feedercart Front Right:&#34;).grid(row=row3, column=0)
+        feedercart_3x = tk.Entry(top)
+        feedercart_3x.insert(&#34;end&#34;, &#34;0&#34;)
+        feedercart_3x.grid(row=row3, column=1)
+        feedercart_3y = tk.Entry(top)
+        feedercart_3y.insert(&#34;end&#34;, &#34;0&#34;)
+        feedercart_3y.grid(row=row3, column=2)
+        # feedercart 4
+        row4 = 11
+        tk.Label(top, text=&#34;Feedercart Back Right:&#34;).grid(row=row4, column=0)
+        feedercart_4x = tk.Entry(top)
+        feedercart_4x.insert(&#34;end&#34;, &#34;0&#34;)
+        feedercart_4x.grid(row=row4, column=1)
+        feedercart_4y = tk.Entry(top)
+        feedercart_4y.insert(&#34;end&#34;, &#34;0&#34;)
+        feedercart_4y.grid(row=row4, column=2)
+
+        machineType = tk.Checkbutton(top, var=smdMachine)
+        machineType.grid(row=3, column=1)
+
+        def clearMachine():
+            nameEntry.delete(0, &#34;end&#34;)
+            cphEntry.delete(0, &#34;end&#34;)
+            nozHeads.delete(0, &#34;end&#34;)
+
+        def close():
+            top.withdraw()
+
+        def confirm():
+            try:
+                self.button_pressed.set(&#34;button pressed&#34;)
+                name = nameEntry.get()
+                cph = int(cphEntry.get())
+                noz = int(nozHeads.get())
+                if smdMachine.get() == False:
+                    self.machines[name] = Machine(name, cph, noz, smdMachine.get())
+                    return close()
+                args = {
+                    &#34;checkpoint&#34;: [int(checkpointX.get()), int(checkpointY.get())],
+                    &#34;pcb&#34;: [int(pcbX.get()), int(pcbY.get())],
+                    &#34;tools&#34;: [int(toolX.get()), int(toolY.get())],
+                    &#34;feedercarts&#34;: [
+                        {&#34;ST-FL&#34;: [int(feedercart_1x.get()), int(feedercart_1y.get())]},
+                        {&#34;ST-RL&#34;: [int(feedercart_2x.get()), int(feedercart_2y.get())]},
+                        {&#34;ST-FR&#34;: [feedercart_3x.get(), feedercart_3y.get()]},
+                        {&#34;ST-RR&#34;: [feedercart_4x.get(), feedercart_4y.get()]},
+                    ],
+                }
+                self.machines[name] = Machine(
+                    name, cph, noz, smdMachine.get(), offsets=args
+                )
+                close()
+            except Exception as e:
+                tk.Label(
+                    top, text=&#34;Please only use Numbers for CPH and Nozzle Heads&#34;
+                ).grid(row=51, column=1)
+
+        def load():
+            self.machines.clear()
+            data = self.__openNew()
+            if data == None:
+                return
+            for i in data[&#34;machines&#34;]:
+                self.machines[i[&#34;machine&#34;]] = Machine(
+                    i[&#34;machine&#34;], i[&#34;cph&#34;], i[&#34;nozHeads&#34;], i[&#34;SMD&#34;], i[&#34;offsets&#34;]
+                )
+            close()
+
+        def nextMachine():
+            confirm()
+            self.__setupMachines()
+
+        fileMenu = {&#34;New&#34;: clearMachine, &#34;Load&#34;: load, &#34;Exit&#34;: close}
+        self.conButton = ttk.Button(top, text=&#34;OK&#34;, command=confirm)
+        self.conButton.grid(row=50, column=0)
+        nextButton = ttk.Button(top, text=&#34;Add another&#34;, command=nextMachine)
+        nextButton.grid(row=50, column=1)
+        self.__createMenu(menubar, &#34;File&#34;, fileMenu)
+        top.config(menu=menubar)
+
+    def __viewMachines(self) -&gt; tk.Toplevel:
+        &#34;&#34;&#34;Creates the window to view the loaded machines.
+
+        Returns:
+            tk.Toplevel: The created Window.
+        &#34;&#34;&#34;
+        top = tk.Toplevel(self.mainframe)
+        top.geometry(&#34;300x200&#34;)
+        top.title(&#34;Machines&#34;)
+        menubar = tk.Menu(top)
+        scrollbar = tk.Scrollbar(top)
+        scrollbar.pack(side=&#34;right&#34;, fill=&#34;y&#34;)
+        mylist = tk.Listbox(top, yscrollcommand=scrollbar.set)
+
+        def createEntry(machine: Machine):
+            mylist.insert(&#34;end&#34;, f&#34;Machine: {machine.machineName} &#34;)
+            mylist.insert(&#34;end&#34;, f&#34;CPH: {machine.cph} &#34;)
+            mylist.insert(&#34;end&#34;, f&#34;Velocity: {machine.velocity} &#34;)
+            mylist.insert(&#34;end&#34;, f&#34;Nozzle Heads: {machine.nozHeads} &#34;)
+            mylist.insert(&#34;end&#34;, f&#34;Offsets: {machine.offsets} &#34;)
+            mylist.insert(&#34;end&#34;, f&#34;-------------&#34;)
+
+        for key in self.machines:
+            createEntry(self.machines[key])
+        mylist.pack(side=&#34;top&#34;, fill=&#34;both&#34;)
+        scrollbar.config(command=mylist.yview)
+
+        def close():
+            top.withdraw()
+
+        def clearMachines():
+            close()
+            self.machines.clear()
+
+        def save():
+            machines = []
+            for key in self.machines:
+                machines.append(self.machines[key].getData())
+
+            data = {&#34;machines&#34;: machines}
+            self.__saveAs(data)
+
+        def load():
+            self.machines.clear()
+            data = self.__openNew()
+            if data == None:
+                return
+            for i in data[&#34;machines&#34;]:
+                self.machines[i[&#34;machine&#34;]] = Machine(
+                    i[&#34;machine&#34;], i[&#34;cph&#34;], i[&#34;nozHeads&#34;], i[&#34;SMD&#34;], i[&#34;offsets&#34;]
+                )
+            close()
+            self.__viewMachines()
+
+        fileMenu = {&#34;Clear&#34;: clearMachines, &#34;Save&#34;: save, &#34;Load&#34;: load, &#34;Exit&#34;: close}
+        self.__createMenu(menubar, &#34;File&#34;, fileMenu)
+        top.config(menu=menubar)
+        ttk.Button(top, text=&#34;ok&#34;, command=close).pack()
+
+    def __setOptions(self) -&gt; tk.Toplevel:
+        &#34;&#34;&#34;Creates window for option management.
+
+        Returns:
+            tk.Toplevel: The created window.
+        &#34;&#34;&#34;
+        top = tk.Toplevel(self.mainframe)
+        top.geometry(&#34;300x150&#34;)
+        top.title(&#34;Options&#34;)
+
+        def callback():
+            max = randominterruptmax.get()
+            min = randominterruptmin.get()
+            address = networkAddress.get()
+            if min &gt; max:
+                return tk.Label(
+                    top,
+                    text=&#34;The maximum interrupt value needs to be higher then the minimum!&#34;,
+                    foreground=&#34;red&#34;,
+                    wraplengt=200,
+                ).pack()
+            self.config.set(&#34;default&#34;, &#34;randominterruptmax&#34;, str(max))
+            self.config.set(&#34;default&#34;, &#34;randominterruptmin&#34;, str(min))
+            self.config.set(&#34;network&#34;, &#34;api_address&#34;, str(address))
+            top.withdraw()
+            return True
+
+        tk.Label(top, text=&#34;Random Interruptions Max&#34;).pack()
+        randominterruptmax = tk.IntVar()
+        randominterruptmax.set(self.config.getint(&#34;default&#34;, &#34;randominterruptmax&#34;))
+        tk.Entry(top, textvariable=randominterruptmax).pack()
+        tk.Label(top, text=&#34;Random Interruptions Min&#34;).pack()
+        randominterruptmin = tk.IntVar()
+        randominterruptmin.set(self.config.getint(&#34;default&#34;, &#34;randominterruptmin&#34;))
+        tk.Entry(top, textvariable=randominterruptmin).pack()
+        tk.Label(top, text=&#34;API Network Address&#34;).pack()
+        networkAddress = tk.StringVar()
+        networkAddress.set(self.config.get(&#34;network&#34;, &#34;api_address&#34;))
+        tk.Entry(top, textvariable=networkAddress).pack()
+
+        ttk.Button(top, text=&#34;OK&#34;, command=callback).pack()
+
+    def __new(self) -&gt; None:
+        &#34;&#34;&#34;Clears all entries.&#34;&#34;&#34;
+        self.numManu.delete(0, &#34;end&#34;)
+
+    def __saveAs(self, data: dict) -&gt; None:
+        &#34;&#34;&#34;Save the privided Data to `.json`.
+
+        Args:
+            data (dict): The data to save.
+        &#34;&#34;&#34;
+        file_opt = options = {}
+        options[&#34;filetypes&#34;] = [(&#34;JSON files&#34;, &#34;.json&#34;), (&#34;all files&#34;, &#34;.*&#34;)]
+        options[&#34;initialdir&#34;] = os.getcwd() + os.path.normpath(&#34;/data/presets&#34;)
+
+        filename = filedialog.asksaveasfile(defaultextension=&#34;.json&#34;, **file_opt)
+        if filename is None:
+            return
+
+        json.dump(data, filename)
+
+    def __openNew(self) -&gt; (None | dict):
+        &#34;&#34;&#34;Opens an interface for file loading.
+
+        Returns:
+            Dict: The loaded `.json` file.
+            None: If no file is selected.
+        &#34;&#34;&#34;
+        file_opt = options = {}
+        options[&#34;filetypes&#34;] = [(&#34;JSON files&#34;, &#34;.json&#34;), (&#34;all files&#34;, &#34;.*&#34;)]
+        options[&#34;initialdir&#34;] = os.getcwd() + os.path.normpath(&#34;/data/presets&#34;)
+        filename = filedialog.askopenfilename(**file_opt)
+        if filename == None or filename == &#34;&#34;:
+            return
+        with open(filename) as file:
+            data = json.load(file)
+
+        return data
+
+    def __compare(self) -&gt; None:
+        &#34;&#34;&#34;Dummy operation for now.&#34;&#34;&#34;
+        # startDate = str(self.calDate[&#34;start&#34;])
+        # endDate = str(self.calDate[&#34;end&#34;])
+
+        request = requests.get(
+            f&#34;{self.config.get(&#39;network&#39;, &#39;api_address&#39;)}/data/options&#34;
+        )
+        controller = Controller(self.mainframe)
+        controller.error(request.status_code)
+        print(request.json())
+
+    def __startSimulation(self, *args: any, **kwargs: any):
+        &#34;&#34;&#34;Starts simulation in a new Thread.&#34;&#34;&#34;
+        threading.Thread(target=self.__simulate).start()
+
+    def __startCompare(self, *args: any, **kwargs: any):
+        &#34;&#34;&#34;Starts Compare function in a new Thread.&#34;&#34;&#34;
+        threading.Thread(target=self.__compare).start()
+
+    def __simulate(self) -&gt; None:
+        &#34;&#34;&#34;Simulate the manufacturing environment.&#34;&#34;&#34;
+        machineTime = {}
+        setupTime = {}
+        coords = {}
+        product_id = self.product.get()
+        controller = Controller(self.mainframe)
+        controller.wait()
+        randomInterrupt = (
+            (0, 0)
+            if self.randomInterupt.get() == False
+            else (
+                self.config.getint(&#34;default&#34;, &#34;randominterruptmin&#34;),
+                self.config.getint(&#34;default&#34;, &#34;randominterruptmax&#34;),
+            )
+        )
+        # return
+        if len(self.machines) == 0:
+            return controller.error(
+                &#34;Please load or create a machine configuration first!&#34;
+            )
+        for i in self.machines:
+            machine: Machine = self.machines[i]
+            data = machine.getData()
+            manufacturingType = &#34;manufacturing&#34;
+            if self.machines[i].SMD == False:
+                manufacturingType = &#34;coating&#34;
+
+            params = {
+                &#34;productId&#34;: product_id,
+                &#34;machine&#34;: machine.machineName,
+                &#34;randomInterMin&#34;: randomInterrupt[0],
+                &#34;randomInterMax&#34;: randomInterrupt[1],
+                &#34;useIdealState&#34;: self.useIdealState.get(),
+            }
+            requestData = self.requests.get(&#34;/simulate/setup/&#34;, params)
+
+            if type(requestData) == tuple:
+                return controller.error(requestData[1])
+
+            setupTime[machine.machineName] = requestData[&#34;time&#34;]
+
+            request = self.requests.put(f&#34;/simulate/{manufacturingType}/&#34;, params, data)
+
+            if type(request) == tuple:
+                return controller.error(request[1])
+
+            if request.status_code != 200:
+                error = f&#34;{request.status_code} - {request.reason} &#34;
+                return controller.error(error)
+            requestData = request.json()
+            machineTime[self.machines[i].machineName] = requestData[&#34;time&#34;]
+            if &#34;plot_x&#34; in requestData:
+                coords[self.machines[i].machineName] = {
+                    &#34;X&#34;: requestData[&#34;plot_x&#34;],
+                    &#34;Y&#34;: requestData[&#34;plot_y&#34;],
+                }
+
+        controller(
+            coords=coords,
+            mTime=machineTime,
+            sTime=setupTime,
+            numParts=int(self.numManu.get()),
+            randomInterupt=randomInterrupt,
+            prodName=product_id,
+        )</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="src" href="index.html">src</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="src.interface.Interface" href="#src.interface.Interface">Interface</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
