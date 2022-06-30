@@ -126,6 +126,10 @@ class Interface:
         """Call this to initate the window."""
         self.mainframe.mainloop()
 
+    def run(self) -> None:
+        """Call this to initate the window."""
+        self.mainframe.mainloop()
+
     def __onClose(self, *args: any, **kwargs: any) -> None:
         """Closing Operation. Saves config variables to file."""
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
