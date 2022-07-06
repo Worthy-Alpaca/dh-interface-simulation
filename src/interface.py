@@ -118,6 +118,7 @@ class Interface:
         self.config.set("default", "randomInterruptMin", "0")
         self.config.set("default", "useIdealState", "false")
         self.config.set("default", "randomInterrupt", "false")
+        self.config.set("default", "useAISim", "false")
         self.config.add_section("network")
         self.config.set("network", "api_address", "http://127.0.0.1:5000")
         self.config.set("network", "base_path", "/api/v1/")
@@ -220,6 +221,15 @@ class Interface:
             var=self.randomInterupt,
             command=lambda: self.config.set(
                 "default", "randomInterrupt", str(self.randomInterupt.get())
+            ),
+        )
+        self.useAISim = tk.BooleanVar()
+        self.useAISim.set(self.config.getboolean("default", "useAISim"))
+        filemenu.add_checkbutton(
+            label="Use AI Simulation",
+            var=self.useAISim,
+            command=lambda: self.config.set(
+                "default", "useAISim", str(self.randomInterupt.get())
             ),
         )
         filemenu.add_separator()
@@ -676,8 +686,6 @@ class Interface:
             machine: Machine = self.machines[i]
             data = machine.getData()
             manufacturingType = "manufacturing"
-            if self.machines[i].SMD == False:
-                manufacturingType = "coating"
 
             params = {
                 "productId": product_id,
@@ -692,6 +700,12 @@ class Interface:
                 return controller.error(requestData[1])
 
             setupTime[machine.machineName] = requestData["time"]
+
+            if self.useAISim.get():
+                manufacturingType = "AI"
+
+            if self.machines[i].SMD == False:
+                manufacturingType = "coating"
 
             request = self.requests.put(f"/simulate/{manufacturingType}/", params, data)
 
