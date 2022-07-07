@@ -141,6 +141,7 @@ class Interface:
             ) as configfile:
                 self.config.write(configfile)
             self.mainframe.destroy()
+            exit()
 
     def __startThread(self, function: FunctionType, *args):
         """Start a new thread with a given function.
