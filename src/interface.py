@@ -1,9 +1,3 @@
-PACKAGE_PARENT = "../"
-SCRIPT_DIR = os.path.dirname(
-    os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__)))
-)
-sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
-
 import sys
 import os
 import json
@@ -16,6 +10,12 @@ from types import FunctionType
 from tkinter import Grid, filedialog, PhotoImage, ttk, messagebox
 from tkcalendar import Calendar
 from os.path import exists
+
+PACKAGE_PARENT = "../"
+SCRIPT_DIR = os.path.dirname(
+    os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__)))
+)
+sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
 try:
     from src.modules.gui.parent.canvas import MyCanvas
