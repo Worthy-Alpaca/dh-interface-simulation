@@ -26,16 +26,14 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import os
-import random
-import sys
+<pre><code class="python">import random
 import tkinter as tk
+from matplotlib.pyplot import style
 
 try:
     from src.modules.gui.parent.canvas import MyCanvas
 except:
     from modules.gui.parent.canvas import MyCanvas
-from matplotlib.pyplot import style
 
 
 class Controller(MyCanvas):

@@ -26,18 +26,18 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from turtle import width
+<pre><code class="python">import tkinter as tk
+from tkinter import *
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-import tkinter as tk
-from tkinter import *
+
 
 class MyCanvas(tk.Canvas):
-    def __init__(self, master, **kwargs ) -&gt; None:
+    def __init__(self, master, **kwargs) -&gt; None:
         super().__init__(master, **kwargs)
         &#34;&#34;&#34;Creates the canvas on which to draw&#34;&#34;&#34;
         self.mainframe = master
-        #self.figure = Figure(figsize=(11.6, 6.5), dpi=100)
+        # self.figure = Figure(figsize=(11.6, 6.5), dpi=100)
         self.figure = Figure(dpi=100)
         self.canvas = FigureCanvasTkAgg(self.figure, master=self.mainframe)
         self.bind(&#34;&lt;Configure&gt;&#34;, self.__on_resize)
@@ -46,31 +46,36 @@ class MyCanvas(tk.Canvas):
         self.canvas.draw()
         self.__tools()
 
-    def __on_resize(self,event):
+    def __on_resize(self, event):
         # determine the ratio of old width/height to new width/height
-        wscale = float(event.width)/self.width
-        hscale = float(event.height)/self.height
+        wscale = float(event.width) / self.width
+        hscale = float(event.height) / self.height
         self.width = event.width
         self.height = event.height
-        # resize the canvas 
+        # resize the canvas
         self.config(width=self.width, height=self.height)
         # rescale all the objects tagged with the &#34;all&#34; tag
-        self.scale(&#34;all&#34;,0,0,wscale,hscale)
+        self.scale(&#34;all&#34;, 0, 0, wscale, hscale)
 
     def __tools(self):
-        self.canvas.get_tk_widget().grid(row=3, column=0, columnspan=10, rowspan=10, padx=(20, 20), sticky=&#39;nsew&#39;)
-        self.toolbar = NavigationToolbar2Tk(self.canvas, self.mainframe, pack_toolbar=False)
+        self.canvas.get_tk_widget().grid(
+            row=3, column=0, columnspan=10, rowspan=10, padx=(20, 20), sticky=&#34;nsew&#34;
+        )
+        self.toolbar = NavigationToolbar2Tk(
+            self.canvas, self.mainframe, pack_toolbar=False
+        )
         self.toolbar.update()
-        self.toolbar.grid(row=13, column=0, columnspan=10, rowspan=10, padx=(20, 20), sticky=&#39;nsew&#39;)
+        self.toolbar.grid(
+            row=13, column=0, columnspan=10, rowspan=10, padx=(20, 20), sticky=&#34;nsew&#34;
+        )
 
 
-if __name__ == &#39;__main__&#39;:
+if __name__ == &#34;__main__&#34;:
     root = Tk()
     myframe = Frame(root)
     myframe.pack(fill=BOTH, expand=YES)
 
     mycanvas = MyCanvas(myframe, highlightthickness=0)
-
 
     mycanvas.pack(fill=BOTH, expand=YES)
     mycanvas.create_line(0, 0, 200, 100)
@@ -108,11 +113,11 @@ yscrollcommand, yscrollincrement.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class MyCanvas(tk.Canvas):
-    def __init__(self, master, **kwargs ) -&gt; None:
+    def __init__(self, master, **kwargs) -&gt; None:
         super().__init__(master, **kwargs)
         &#34;&#34;&#34;Creates the canvas on which to draw&#34;&#34;&#34;
         self.mainframe = master
-        #self.figure = Figure(figsize=(11.6, 6.5), dpi=100)
+        # self.figure = Figure(figsize=(11.6, 6.5), dpi=100)
         self.figure = Figure(dpi=100)
         self.canvas = FigureCanvasTkAgg(self.figure, master=self.mainframe)
         self.bind(&#34;&lt;Configure&gt;&#34;, self.__on_resize)
@@ -121,22 +126,28 @@ yscrollcommand, yscrollincrement.</p></div>
         self.canvas.draw()
         self.__tools()
 
-    def __on_resize(self,event):
+    def __on_resize(self, event):
         # determine the ratio of old width/height to new width/height
-        wscale = float(event.width)/self.width
-        hscale = float(event.height)/self.height
+        wscale = float(event.width) / self.width
+        hscale = float(event.height) / self.height
         self.width = event.width
         self.height = event.height
-        # resize the canvas 
+        # resize the canvas
         self.config(width=self.width, height=self.height)
         # rescale all the objects tagged with the &#34;all&#34; tag
-        self.scale(&#34;all&#34;,0,0,wscale,hscale)
+        self.scale(&#34;all&#34;, 0, 0, wscale, hscale)
 
     def __tools(self):
-        self.canvas.get_tk_widget().grid(row=3, column=0, columnspan=10, rowspan=10, padx=(20, 20), sticky=&#39;nsew&#39;)
-        self.toolbar = NavigationToolbar2Tk(self.canvas, self.mainframe, pack_toolbar=False)
+        self.canvas.get_tk_widget().grid(
+            row=3, column=0, columnspan=10, rowspan=10, padx=(20, 20), sticky=&#34;nsew&#34;
+        )
+        self.toolbar = NavigationToolbar2Tk(
+            self.canvas, self.mainframe, pack_toolbar=False
+        )
         self.toolbar.update()
-        self.toolbar.grid(row=13, column=0, columnspan=10, rowspan=10, padx=(20, 20), sticky=&#39;nsew&#39;)</code></pre>
+        self.toolbar.grid(
+            row=13, column=0, columnspan=10, rowspan=10, padx=(20, 20), sticky=&#34;nsew&#34;
+        )</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">

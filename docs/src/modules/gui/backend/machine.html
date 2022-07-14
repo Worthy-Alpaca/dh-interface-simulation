@@ -36,16 +36,20 @@ SCRIPT_DIR = os.path.dirname(
 )
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
-from pathlib import Path
-
 
 class Machine:
-    &#34;&#34;&#34;Class that represents a machine&#34;&#34;&#34;
-
-    # def __init__(self, name: str, cph: int, nozHeads: int, machineType: str, offsets: dict = None) -&gt; None:
     def __init__(
         self, machine: str, cph: int, nozHeads: int, SMD: bool, offsets: dict = None
     ) -&gt; None:
+        &#34;&#34;&#34;A Machine Instance
+
+        Args:
+            machine (str): The current machine name.
+            cph (int): The current machine CPH.
+            nozHeads (int): The current amount of nozzle heads.
+            SMD (bool): If the machine is a SMD Machine
+            offsets (dict, optional): The internal offsets. Defaults to None.
+        &#34;&#34;&#34;
         self.machineName = machine
         self.cph = cph
         self.nozHeads = nozHeads
@@ -55,6 +59,11 @@ class Machine:
         self.offsets = offsets
 
     def getData(self) -&gt; dict:
+        &#34;&#34;&#34;Get all machine properties as a dict.
+
+        Returns:
+            dict: The machine properties.
+        &#34;&#34;&#34;
         return {
             &#34;machine&#34;: self.machineName,
             &#34;cph&#34;: self.cph,
@@ -78,18 +87,37 @@ class Machine:
 <span>(</span><span>machine: str, cph: int, nozHeads: int, SMD: bool, offsets: dict = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Class that represents a machine</p></div>
+<div class="desc"><p>A Machine Instance</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>machine</code></strong> :&ensp;<code>str</code></dt>
+<dd>The current machine name.</dd>
+<dt><strong><code>cph</code></strong> :&ensp;<code>int</code></dt>
+<dd>The current machine CPH.</dd>
+<dt><strong><code>nozHeads</code></strong> :&ensp;<code>int</code></dt>
+<dd>The current amount of nozzle heads.</dd>
+<dt><strong><code>SMD</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If the machine is a SMD Machine</dd>
+<dt><strong><code>offsets</code></strong> :&ensp;<code>dict</code>, optional</dt>
+<dd>The internal offsets. Defaults to None.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Machine:
-    &#34;&#34;&#34;Class that represents a machine&#34;&#34;&#34;
-
-    # def __init__(self, name: str, cph: int, nozHeads: int, machineType: str, offsets: dict = None) -&gt; None:
     def __init__(
         self, machine: str, cph: int, nozHeads: int, SMD: bool, offsets: dict = None
     ) -&gt; None:
+        &#34;&#34;&#34;A Machine Instance
+
+        Args:
+            machine (str): The current machine name.
+            cph (int): The current machine CPH.
+            nozHeads (int): The current amount of nozzle heads.
+            SMD (bool): If the machine is a SMD Machine
+            offsets (dict, optional): The internal offsets. Defaults to None.
+        &#34;&#34;&#34;
         self.machineName = machine
         self.cph = cph
         self.nozHeads = nozHeads
@@ -99,6 +127,11 @@ class Machine:
         self.offsets = offsets
 
     def getData(self) -&gt; dict:
+        &#34;&#34;&#34;Get all machine properties as a dict.
+
+        Returns:
+            dict: The machine properties.
+        &#34;&#34;&#34;
         return {
             &#34;machine&#34;: self.machineName,
             &#34;cph&#34;: self.cph,
@@ -113,12 +146,22 @@ class Machine:
 <span>def <span class="ident">getData</span></span>(<span>self) ‑> dict</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Get all machine properties as a dict.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>The machine properties.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def getData(self) -&gt; dict:
+    &#34;&#34;&#34;Get all machine properties as a dict.
+
+    Returns:
+        dict: The machine properties.
+    &#34;&#34;&#34;
     return {
         &#34;machine&#34;: self.machineName,
         &#34;cph&#34;: self.cph,
