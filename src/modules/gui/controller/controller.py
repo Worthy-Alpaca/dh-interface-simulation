@@ -1,13 +1,11 @@
-import os
 import random
-import sys
 import tkinter as tk
+from matplotlib.pyplot import style
 
 try:
     from src.modules.gui.parent.canvas import MyCanvas
 except:
     from modules.gui.parent.canvas import MyCanvas
-from matplotlib.pyplot import style
 
 
 class Controller(MyCanvas):

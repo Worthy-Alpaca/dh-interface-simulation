@@ -1,6 +1,6 @@
-from typing import Union
 import requests
 import json
+from typing import Union
 
 
 class NetworkRequests:

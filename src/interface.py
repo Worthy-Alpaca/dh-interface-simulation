@@ -1,21 +1,22 @@
-from pathlib import Path
-import tkinter as tk
-from types import FunctionType
-import configparser
-from os.path import exists
-import time as tm
-import requests
-import threading
-from tkinter import *
-import sys
-import os
-import json
-
 PACKAGE_PARENT = "../"
 SCRIPT_DIR = os.path.dirname(
     os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__)))
 )
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
+
+import sys
+import os
+import json
+import configparser
+import requests
+import threading
+import tkinter as tk
+from tkinter import *
+from types import FunctionType
+from tkinter import Grid, filedialog, PhotoImage, ttk, messagebox
+from tkcalendar import Calendar
+from os.path import exists
+
 try:
     from src.modules.gui.parent.canvas import MyCanvas
     from src.modules.gui.controller.controller import Controller
@@ -26,8 +27,6 @@ except:
     from modules.gui.controller.controller import Controller
     from modules.gui.backend.machine import Machine
     from modules.gui.backend.network import NetworkRequests
-from tkinter import Grid, filedialog, PhotoImage, ttk, messagebox
-from tkcalendar import Calendar
 
 
 class Interface:
