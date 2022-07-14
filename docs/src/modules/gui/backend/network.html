@@ -39,7 +39,14 @@ class NetworkRequests:
             networkAddress (str): The network address of the API.
             basePath (str): The base path to the API.
         &#34;&#34;&#34;
-        self.networkAddress = networkAddress + basePath
+
+        try:
+            request = requests.get(networkAddress + &#34;/&#34;)
+            request = request.json()
+            basepath = request[&#34;Basepath&#34;]
+        except:
+            basepath = basePath
+        self.networkAddress = networkAddress + basepath
 
     def get(
         self, endpoint: str, params: dict = {}
@@ -125,7 +132,14 @@ class NetworkRequests:
             networkAddress (str): The network address of the API.
             basePath (str): The base path to the API.
         &#34;&#34;&#34;
-        self.networkAddress = networkAddress + basePath
+
+        try:
+            request = requests.get(networkAddress + &#34;/&#34;)
+            request = request.json()
+            basepath = request[&#34;Basepath&#34;]
+        except:
+            basepath = basePath
+        self.networkAddress = networkAddress + basepath
 
     def get(
         self, endpoint: str, params: dict = {}

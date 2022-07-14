@@ -146,6 +146,7 @@ class Interface:
         self.config.set(&#34;default&#34;, &#34;randomInterruptMin&#34;, &#34;0&#34;)
         self.config.set(&#34;default&#34;, &#34;useIdealState&#34;, &#34;false&#34;)
         self.config.set(&#34;default&#34;, &#34;randomInterrupt&#34;, &#34;false&#34;)
+        self.config.set(&#34;default&#34;, &#34;useAISim&#34;, &#34;false&#34;)
         self.config.add_section(&#34;network&#34;)
         self.config.set(&#34;network&#34;, &#34;api_address&#34;, &#34;http://127.0.0.1:5000&#34;)
         self.config.set(&#34;network&#34;, &#34;base_path&#34;, &#34;/api/v1/&#34;)
@@ -168,6 +169,7 @@ class Interface:
             ) as configfile:
                 self.config.write(configfile)
             self.mainframe.destroy()
+            exit()
 
     def __startThread(self, function: FunctionType, *args):
         &#34;&#34;&#34;Start a new thread with a given function.
@@ -248,6 +250,15 @@ class Interface:
             var=self.randomInterupt,
             command=lambda: self.config.set(
                 &#34;default&#34;, &#34;randomInterrupt&#34;, str(self.randomInterupt.get())
+            ),
+        )
+        self.useAISim = tk.BooleanVar()
+        self.useAISim.set(self.config.getboolean(&#34;default&#34;, &#34;useAISim&#34;))
+        filemenu.add_checkbutton(
+            label=&#34;Use AI Simulation&#34;,
+            var=self.useAISim,
+            command=lambda: self.config.set(
+                &#34;default&#34;, &#34;useAISim&#34;, str(self.randomInterupt.get())
             ),
         )
         filemenu.add_separator()
@@ -704,8 +715,6 @@ class Interface:
             machine: Machine = self.machines[i]
             data = machine.getData()
             manufacturingType = &#34;manufacturing&#34;
-            if self.machines[i].SMD == False:
-                manufacturingType = &#34;coating&#34;
 
             params = {
                 &#34;productId&#34;: product_id,
@@ -720,6 +729,12 @@ class Interface:
                 return controller.error(requestData[1])
 
             setupTime[machine.machineName] = requestData[&#34;time&#34;]
+
+            if self.useAISim.get():
+                manufacturingType = &#34;AI&#34;
+
+            if self.machines[i].SMD == False:
+                manufacturingType = &#34;coating&#34;
 
             request = self.requests.put(f&#34;/simulate/{manufacturingType}/&#34;, params, data)
 
@@ -857,6 +872,7 @@ if __name__ == &#34;__main__&#34;:
         self.config.set(&#34;default&#34;, &#34;randomInterruptMin&#34;, &#34;0&#34;)
         self.config.set(&#34;default&#34;, &#34;useIdealState&#34;, &#34;false&#34;)
         self.config.set(&#34;default&#34;, &#34;randomInterrupt&#34;, &#34;false&#34;)
+        self.config.set(&#34;default&#34;, &#34;useAISim&#34;, &#34;false&#34;)
         self.config.add_section(&#34;network&#34;)
         self.config.set(&#34;network&#34;, &#34;api_address&#34;, &#34;http://127.0.0.1:5000&#34;)
         self.config.set(&#34;network&#34;, &#34;base_path&#34;, &#34;/api/v1/&#34;)
@@ -879,6 +895,7 @@ if __name__ == &#34;__main__&#34;:
             ) as configfile:
                 self.config.write(configfile)
             self.mainframe.destroy()
+            exit()
 
     def __startThread(self, function: FunctionType, *args):
         &#34;&#34;&#34;Start a new thread with a given function.
@@ -959,6 +976,15 @@ if __name__ == &#34;__main__&#34;:
             var=self.randomInterupt,
             command=lambda: self.config.set(
                 &#34;default&#34;, &#34;randomInterrupt&#34;, str(self.randomInterupt.get())
+            ),
+        )
+        self.useAISim = tk.BooleanVar()
+        self.useAISim.set(self.config.getboolean(&#34;default&#34;, &#34;useAISim&#34;))
+        filemenu.add_checkbutton(
+            label=&#34;Use AI Simulation&#34;,
+            var=self.useAISim,
+            command=lambda: self.config.set(
+                &#34;default&#34;, &#34;useAISim&#34;, str(self.randomInterupt.get())
             ),
         )
         filemenu.add_separator()
@@ -1415,8 +1441,6 @@ if __name__ == &#34;__main__&#34;:
             machine: Machine = self.machines[i]
             data = machine.getData()
             manufacturingType = &#34;manufacturing&#34;
-            if self.machines[i].SMD == False:
-                manufacturingType = &#34;coating&#34;
 
             params = {
                 &#34;productId&#34;: product_id,
@@ -1431,6 +1455,12 @@ if __name__ == &#34;__main__&#34;:
                 return controller.error(requestData[1])
 
             setupTime[machine.machineName] = requestData[&#34;time&#34;]
+
+            if self.useAISim.get():
+                manufacturingType = &#34;AI&#34;
+
+            if self.machines[i].SMD == False:
+                manufacturingType = &#34;coating&#34;
 
             request = self.requests.put(f&#34;/simulate/{manufacturingType}/&#34;, params, data)
 
